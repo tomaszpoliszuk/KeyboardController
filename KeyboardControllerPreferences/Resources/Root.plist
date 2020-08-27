@@ -1,0 +1,1206 @@
+{
+	title = "Keyboard Controller";
+	items = (
+		{
+			cell = PSSwitchCell;
+			key = "enableTweak";
+			label = "Enable Tweak";
+			default = 1;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			height = 55;
+			icon = icons/KeyboardController.png;
+		},
+		{
+			cell = PSGroupCell;
+			label = "UI Style";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "uiStyle";
+			label = "UI Style";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				2,
+				1,
+			);
+			validTitles = (
+				Default,
+				Light,
+				Dark,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Dictation Button";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "dictationButton";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				0,
+			);
+			validTitles = (
+				Default,
+				Disable,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Select Types";
+		},
+		{
+			cell = PSLinkCell;
+			label = "Edit Keyboard Type";
+			detail = "PSListController";
+			title = "Edit Keyboard Type";
+			items = (
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies the default keyboard for the current input method.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "defaultKeyboard";
+					label = "Default";
+					default = 0;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test Default keyboard";
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies the numbers and punctuation keyboard.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "numbersAndPunctuationKeyboard";
+					label = "Numbers and Punctuation";
+					default = 2;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test Numbers and Punctuation keyboard";
+					keyboard = "numbers";
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard optimized for URL entry. This keyboard type prominently features the period (“.”) and slash (“/”) characters and the “.com” string.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "urlKeyboard";
+					label = "URL";
+					default = 3;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test URL keyboard";
+					isURL = 1;
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard optimized for entering email addresses. This keyboard type prominently features the at (“@”), period (“.”) and space characters.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "emailAddressKeyboard";
+					label = "Email Address";
+					default = 7;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test Email Address keyboard";
+					isEmail = 1;
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard that displays standard ASCII characters.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "asciiCapableKeyboard";
+					label = "ASCII Capable";
+					default = 1;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard optimized for web search terms and URL entry. This keyboard type prominently features the space and period (“.”) characters.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "webSearchKeyboard";
+					label = "Web Search";
+					default = 10;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard optimized for alphabetic entry.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "alphabetKeyboard";
+					label = "Alphabet";
+					default = 12;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keypad designed for entering a person’s name or phone number. This keyboard type does not support auto-capitalization.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "namePhonePadKeyboard";
+					label = "Name Phone Pad";
+					default = 6;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard optimized for Twitter text entry, with easy access to the at (“@”) and hash (“#”) characters.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "twitterKeyboard";
+					label = "Twitter";
+					default = 9;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a numeric keypad designed for PIN entry. This keyboard type prominently features the numbers 0 through 9. This keyboard type does not support auto-capitalization.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "numberPadKeyboard";
+					label = "Number Pad";
+					default = 4;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test Number Pad keyboard";
+					isNumeric = 1;
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keyboard with numbers and a decimal point.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "decimalPadKeyboard";
+					label = "Decimal Pad";
+					default = 8;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test Decimal Pad keyboard";
+					isDecimalPad = 1;
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a keypad designed for entering telephone numbers. This keyboard type prominently features the numbers 0 through 9 and the “*” and “#” characters. This keyboard type does not support auto-capitalization.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "phonePadKeyboard";
+					label = "Phone Pad";
+					default = 5;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test Phone Pad keyboard";
+					keyboard = "phone";
+				},
+				{
+					cell = PSGroupCell;
+					footerText = "Specifies a number pad that outputs only ASCII digits.";
+				},
+				{
+					cell = PSLinkListCell;
+					key = "asciiCapableNumberPadKeyboard";
+					label = "ASCII Capable Number Pad";
+					default = 11;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						2,
+						3,
+						7,
+						1,
+						10,
+						12,
+						6,
+						9,
+						4,
+						8,
+						5,
+						11,
+					);
+					validTitles = (
+						"Default",
+						"Numbers and Punctuation",
+						URL,
+						"Email Address",
+						"ASCII Capable",
+						"Web Search",
+						Alphabet,
+						"Name Phone Pad",
+						Twitter,
+						"Number Pad",
+						"Decimal Pad",
+						"Phone Pad",
+						"ASCII Capable Number Pad",
+					);
+				},
+			);
+		},
+		{
+			cell = PSLinkCell;
+			label = "Edit Return Key Type";
+			detail = "PSListController";
+			title = "Edit Return Key Type";
+			items = (
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeDefault";
+					label = "Default";
+					default = 0;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeGo";
+					label = "Go";
+					default = 1;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeGoogle";
+					label = "Google";
+					default = 2;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeJoin";
+					label = "Join";
+					default = 3;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeNext";
+					label = "Next";
+					default = 4;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeRoute";
+					label = "Route";
+					default = 5;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeSearch";
+					label = "Search";
+					default = 6;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeSend";
+					label = "Send";
+					default = 7;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeYahoo";
+					label = "Yahoo";
+					default = 8;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeDone";
+					label = "Done";
+					default = 9;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeEmergencyCall";
+					label = "Emergency Call";
+					default = 10;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSLinkListCell;
+					key = "returnKeyTypeContinue";
+					label = "Continue";
+					default = 11;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					detail = PSListItemsController;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+					);
+					validTitles = (
+						Default,
+						Go,
+						Google,
+						Join,
+						Next,
+						Route,
+						Search,
+						Send,
+						Yahoo,
+						Done,
+						"Emergency Call",
+						Continue,
+					);
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test keyboard here";
+				},
+			);
+		},
+		{
+			cell = PSGroupCell;
+			label = "Swipe to dismiss keyboard";
+			footerText = "Disabled:
+The keyboard does not get dismissed with a drag.
+
+Immediately:
+The keyboard is dismissed when a drag begins.
+
+Interactive:
+The keyboard follows the dragging touch offscreen, and can be pulled upward again to cancel the dismiss.";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "keyboardDismissMode";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				0,
+				1,
+				2,
+			);
+			validTitles = (
+				Default,
+				Disabled,
+				Immediately,
+				Interactive,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Testing area";
+		},
+		{
+			cell = PSEditTextCell;
+			default = "";
+			placeholder = "Test keyboard here";
+		},
+		{
+			cell = PSGroupCell;
+			label = "Settings";
+		},
+		{
+			cell = PSButtonCell;
+			label = "Reset Settings";
+			action = resetSettings;
+			alignment = center;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Related Links";
+		},
+		{
+			cell = PSButtonCell;
+			label = "Source Code";
+			action = sourceCode;
+			icon = "icons/code.png";
+		},
+		{
+			cell = PSButtonCell;
+			label = "Report Issue @ GitHub";
+			action = reportIssueAtGithub;
+			icon = "icons/bug.png";
+		},
+		{
+			cell = PSButtonCell;
+			label = "Tomasz Poliszuk @ Github";
+			action = TomaszPoliszukAtGithub;
+			icon = "icons/github.png";
+		},
+		{
+			cell = PSButtonCell;
+			label = "Tomasz Poliszuk @ Twitter";
+			action = TomaszPoliszukAtTwitter;
+			icon = "icons/twitter.png";
+		},
+	);
+}

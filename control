@@ -1,0 +1,11 @@
+Package: com.tomaszpoliszuk.keyboardcontroller
+Depends: firmware (>= 13.0), mobilesubstrate, preferenceloader
+Name: Keyboard Controller
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Control your Keyboard
+Author: Tomasz Poliszuk
+Section: Tweaks
+dev: tomaszpoliszuk
+Tag: purpose::extension, compatible::ios13
+Icon: file:///Library/PreferenceBundles/KeyboardControllerPreferences.bundle/icons/KeyboardController@3x.png
