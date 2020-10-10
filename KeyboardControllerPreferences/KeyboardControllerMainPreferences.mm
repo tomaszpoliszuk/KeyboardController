@@ -17,7 +17,7 @@ NSString *domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 }
 - (void)resetSettings {
 	NSUserDefaults *tweakSettings = [[NSUserDefaults alloc] initWithSuiteName:domainString];
-	UIAlertController *resetSettingsAlert = [UIAlertController alertControllerWithTitle:@"Reset App Switcher Controller Settings" message:@"Do you want to reset settings?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *resetSettingsAlert = [UIAlertController alertControllerWithTitle:@"Reset Keyboard Controller Settings" message:@"Do you want to reset settings?" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 		for(NSString* key in [[tweakSettings dictionaryRepresentation] allKeys]) {
 			[tweakSettings removeObjectForKey:key];
@@ -35,9 +35,9 @@ NSString *domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 	NSURL *sourceCode = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/KeyboardController"];
 	[[UIApplication sharedApplication] openURL:sourceCode options:@{} completionHandler:nil];
 }
--(void)reportIssueAtGithub {
-	NSURL *reportIssueAtGithub = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/KeyboardController/issues/new"];
-	[[UIApplication sharedApplication] openURL:reportIssueAtGithub options:@{} completionHandler:nil];
+-(void)knownIssues {
+	NSURL *knownIssues = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/KeyboardController/issues"];
+	[[UIApplication sharedApplication] openURL:knownIssues options:@{} completionHandler:nil];
 }
 -(void)TomaszPoliszukAtGithub {
 	UIApplication *application = [UIApplication sharedApplication];

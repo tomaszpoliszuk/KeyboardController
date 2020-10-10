@@ -36,26 +36,6 @@
 		},
 		{
 			cell = PSGroupCell;
-			label = "Dictation Button";
-		},
-		{
-			cell = PSSegmentCell;
-			key = "dictationButton";
-			default = 999;
-			defaults = com.tomaszpoliszuk.keyboardcontroller;
-			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
-			validValues = (
-				999,
-				0,
-			);
-			validTitles = (
-				Default,
-				Disable,
-			);
-			height = 55;
-		},
-		{
-			cell = PSGroupCell;
 			label = "Select Types";
 		},
 		{
@@ -1117,6 +1097,10 @@
 					);
 				},
 				{
+					cell = PSGroupCell;
+					label = "Testing area";
+				},
+				{
 					cell = PSEditTextCell;
 					default = "";
 					placeholder = "Test keyboard here";
@@ -1157,6 +1141,182 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 		},
 		{
 			cell = PSGroupCell;
+			label = "Trackpad Mode";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "trackpadMode";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				404,
+				505,
+				1,
+			);
+			validTitles = (
+				Default,
+				Disabled,
+				"Spacebar only",
+				Enabled,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Return Key Styling";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "returnKeyStyling";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				0,
+				1,
+			);
+			validTitles = (
+				Default,
+				Disable,
+				Enable,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Dictation Button";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "dictationButton";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				0,
+			);
+			validTitles = (
+				Default,
+				Disable,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Globe Button";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "shouldShowInternationalKey";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				0,
+			);
+			validTitles = (
+				Default,
+				Disable,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = "Selecting skin tone for emoji";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "selectingSkinToneForEmoji";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				1,
+			);
+			validTitles = (
+				Default,
+				Disable,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = " ";
+		},
+		{
+			cell = PSLinkCell;
+			label = "Experimental features";
+			detail = "PSListController";
+			title = "Experimental features";
+			items = (
+				{
+					cell = PSGroupCell;
+					label = "Use at your own risk only!";
+					footerText = "Buggy features that someone might find useful.";
+				},
+				{
+					cell = PSGroupCell;
+					label = "One-Handed Keyboard";
+				},
+				{
+					cell = PSSegmentCell;
+					key = "oneHandedKeyboard";
+					default = 999;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						999,
+						2,
+						1,
+					);
+					validTitles = (
+						Default,
+						"Force Left",
+						"Force Right",
+					);
+					height = 55;
+				},
+				{
+					cell = PSGroupCell;
+					label = "Blue Theming of Keyboard";
+				},
+				{
+					cell = PSSegmentCell;
+					key = "useBlueThemingForKey";
+					default = 999;
+					defaults = com.tomaszpoliszuk.keyboardcontroller;
+					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+					validValues = (
+						999,
+						0,
+						1,
+					);
+					validTitles = (
+						Default,
+						Disable,
+						Enable,
+					);
+					height = 55;
+				},
+				{
+					cell = PSGroupCell;
+					label = "Testing area";
+				},
+				{
+					cell = PSEditTextCell;
+					default = "";
+					placeholder = "Test keyboard here";
+				},
+			);
+		},
+		{
+			cell = PSGroupCell;
 			label = "Testing area";
 		},
 		{
@@ -1166,7 +1326,7 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 		},
 		{
 			cell = PSGroupCell;
-			label = "Settings";
+			label = " ";
 		},
 		{
 			cell = PSButtonCell;
@@ -1186,8 +1346,8 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 		},
 		{
 			cell = PSButtonCell;
-			label = "Report Issue @ GitHub";
-			action = reportIssueAtGithub;
+			label = "Known Issues";
+			action = knownIssues;
 			icon = "icons/bug.png";
 		},
 		{

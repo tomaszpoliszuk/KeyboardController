@@ -1,44 +1,53 @@
-*Keyboard Controller - Control your Keyboard*
+# Keyboard Controller
+Control your Keyboard
 
-**Requires iOS greater or equal to 13**
+## Compatibility
+iOS 12 and above
 
-**Possibilities:**
-- UI Style (Default, Light, Dark)
-- Dictation Button (Default, Disable)
-- Select Types:
-- - Edit Keyboard Type:
-- - - Default
-- - - Numbers and Punctuation
-- - - URL
-- - - Email Address
-- - - ASCII Capable
-- - - Web Search
-- - - Alphabet
-- - - Name Phone Pad
-- - - Twitter
-- - - Number Pad
-- - - Decimal Pad
-- - - Phone Pad
-- - - ASCII Capable Number Pad
-- - Edit Return Key Type:
-- - - Default
-- - - Go
-- - - Google
-- - - Join
-- - - Next
-- - - Route
-- - - Search
-- - - Send
-- - - Yahoo
-- - - Done
-- - - Emergency Call
-- - - Continue
-- Swipe to dismiss keyboard (Default, Disabled, Immediately, Interactive)
+## What you can do with this tweak:
+* UI Style (Default, Light, Dark)
+* Edit Keyboard Type:
+	- Default
+	- Numbers and Punctuation
+	- URL
+	- Email Address
+	- ASCII Capable
+	- Web Search
+	- Alphabet
+	- Name Phone Pad
+	- Twitter
+	- Number Pad
+	- Decimal Pad
+	- Phone Pad
+	- ASCII Capable Number Pad
+* Edit Return Key Type:
+	- Default
+	- Go
+	- Google
+	- Join
+	- Next
+	- Route
+	- Search
+	- Send
+	- Yahoo
+	- Done
+	- Emergency Call
+	- Continue
+* Swipe to dismiss keyboard (Default, Disabled, Immediately, Interactive)
+* Trackpad mode (Default, Disabled, Spacebar only, Enabled)
+* Return key styling (Default, Disable, Enable)
+* Dictation Button (Default, Disable)
+* Globe Button (Default, Disable)
+* Selecting skin tone for emoji (Default, Disable)
+* Experimental features (Buggy features that someone might find useful):
+	- One-Handed Keyboard (Default, Force Left, Force Right)
+	- Blue Theming of Keyboard (Default, Disable, Enable)
 
-Configure options from Settings.
+**Configure options from Settings.**
 
-**Screenshots:**
+## Screenshots:
 
-![settings](screenshots/keyboardcontroller1.jpg)
-![settings](screenshots/keyboardcontroller2.jpg)
-![settings](screenshots/keyboardcontroller3.jpg)
+![settings](screenshots/keyboardcontroller1.png)
+![settings](screenshots/keyboardcontroller2.png)
+![settings](screenshots/keyboardcontroller3.png)
+![settings](screenshots/keyboardcontroller4.png)

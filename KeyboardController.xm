@@ -7,8 +7,6 @@ static bool enableTweak;
 
 static int uiStyle;
 
-static int dictationButton;
-
 static long long defaultKeyboard;
 static long long asciiCapableKeyboard;
 static long long numbersAndPunctuationKeyboard;
@@ -38,6 +36,20 @@ static long long returnKeyTypeContinue;
 
 static long long keyboardDismissMode;
 
+static int trackpadMode;
+
+static int returnKeyStyling;
+
+static int dictationButton;
+
+static int shouldShowInternationalKey;
+
+static int selectingSkinToneForEmoji;
+
+static int oneHandedKeyboard;
+
+static int useBlueThemingForKey;
+
 void SettingsChanged() {
 	CFArrayRef keyList = CFPreferencesCopyKeyList(CFSTR(packageName), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if(keyList) {
@@ -60,8 +72,6 @@ void SettingsChanged() {
 	enableTweak = [([tweakSettings objectForKey:@"enableTweak"] ?: @(YES)) boolValue];
 
 	uiStyle = [([tweakSettings valueForKey:@"uiStyle"] ?: @(999)) integerValue];
-
-	dictationButton = [([tweakSettings objectForKey:@"dictationButton"] ?: @(999)) integerValue];
 
 	defaultKeyboard = [([tweakSettings valueForKey:@"defaultKeyboard"] ?: @(0)) integerValue];
 	asciiCapableKeyboard = [([tweakSettings valueForKey:@"asciiCapableKeyboard"] ?: @(1)) integerValue];
@@ -91,6 +101,20 @@ void SettingsChanged() {
 	returnKeyTypeContinue = [([tweakSettings valueForKey:@"returnKeyTypeContinue"] ?: @(11)) integerValue];
 
 	keyboardDismissMode = [([tweakSettings valueForKey:@"keyboardDismissMode"] ?: @(999)) integerValue];
+
+	trackpadMode = [([tweakSettings valueForKey:@"trackpadMode"] ?: @(999)) integerValue];
+
+	returnKeyStyling = [([tweakSettings valueForKey:@"returnKeyStyling"] ?: @(999)) integerValue];
+
+	dictationButton = [([tweakSettings objectForKey:@"dictationButton"] ?: @(999)) integerValue];
+
+	shouldShowInternationalKey = [([tweakSettings objectForKey:@"shouldShowInternationalKey"] ?: @(999)) integerValue];
+
+	selectingSkinToneForEmoji = [([tweakSettings objectForKey:@"selectingSkinToneForEmoji"] ?: @(999)) integerValue];
+
+	oneHandedKeyboard = [([tweakSettings valueForKey:@"oneHandedKeyboard"] ?: @(999)) integerValue];
+
+	useBlueThemingForKey = [([tweakSettings objectForKey:@"useBlueThemingForKey"] ?: @(999)) integerValue];
 }
 
 static void receivedNotification(
@@ -103,27 +127,16 @@ static void receivedNotification(
 	SettingsChanged();
 }
 
+
+@interface UIView (KeyboardController)
+-(id)_viewControllerForAncestor;
+@end
+
 %hook UITextInputTraits
 - (long long)keyboardAppearance {
 	long long origValue = %orig;
 	if ( enableTweak && uiStyle != 999 ) {
 		return uiStyle;
-	} else {
-		return origValue;
-	}
-}
-- (int)forceDisableDictation {
-	int origValue = %orig;
-	if ( enableTweak && dictationButton != 999 ) {
-		return !dictationButton;
-	} else {
-		return origValue;
-	}
-}
-- (int)forceEnableDictation {
-	int origValue = %orig;
-	if ( enableTweak && dictationButton != 999 ) {
-		return dictationButton;
 	} else {
 		return origValue;
 	}
@@ -190,13 +203,136 @@ static void receivedNotification(
 		return origValue;
 	}
 }
+- (int)forceDisableDictation {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return !dictationButton;
+	} else {
+		return origValue;
+	}
+}
+- (int)forceEnableDictation {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return dictationButton;
+	} else {
+		return origValue;
+	}
+}
+- (int)suppressReturnKeyStyling {
+	int origValue = %orig;
+	if ( enableTweak && returnKeyStyling != 999 ) {
+		return !returnKeyStyling;
+	} else {
+		return origValue;
+	}
+}
 %end
 
 %hook UIScrollView
 - (long long)keyboardDismissMode {
 	long long origValue = %orig;
 	if ( enableTweak && keyboardDismissMode != 999 ) {
-		return keyboardDismissMode;
+		if (![[self _viewControllerForAncestor] isKindOfClass:%c(UICompatibilityInputViewController)]) {
+			return keyboardDismissMode;
+		}
+	}
+	return origValue;
+}
+%end
+
+%hook _UIKeyboardTextSelectionInteraction
+- (int)forceTouchGestureRecognizerShouldBegin:(id)arg1 {
+	int origValue = %orig;
+	if ( enableTweak && trackpadMode == 404 ) {
+		return NO;
+	} else if ( enableTweak && trackpadMode == 505 ) {
+		return NO;
+	} else if ( enableTweak && trackpadMode == 1 ) {
+		return YES;
+	}
+	return origValue;
+}
+- (int)gestureRecognizerShouldBegin:(id)arg1 {
+	int origValue = %orig;
+	if ( enableTweak && trackpadMode == 404 ) {
+		return NO;
+	} else if ( enableTweak && trackpadMode == 505 ) {
+		return YES;
+	} else if ( enableTweak && trackpadMode == 1 ) {
+		return YES;
+	}
+	return origValue;
+}
+%end
+
+%hook UIKeyboardImpl
+- (int)shouldShowInternationalKey {
+	int origValue = %orig;
+	if ( enableTweak && shouldShowInternationalKey != 999 ) {
+		return shouldShowInternationalKey;
+	} else {
+		return origValue;
+	}
+}
+%end
+
+%hook UIKeyboardEmojiCollectionInputView
+- (int)skinToneWasUsedForEmoji:(id)arg1 {
+	int origValue = %orig;
+	if ( enableTweak && selectingSkinToneForEmoji != 999 ) {
+		return selectingSkinToneForEmoji;
+	} else {
+		return origValue;
+	}
+}
+%end
+
+%hook UIKeyboardEmojiPreferences
+- (int)hasDisplayedSkinToneHelp {
+	int origValue = %orig;
+	if ( enableTweak && selectingSkinToneForEmoji != 999 ) {
+		return selectingSkinToneForEmoji;
+	} else {
+		return origValue;
+	}
+}
+%end
+
+%hook UIKeyboardLayoutStar
+- (long long)currentHandBias {
+	long long origValue = %orig;
+	if ( enableTweak && oneHandedKeyboard != 999 ) {
+		return oneHandedKeyboard;
+	} else {
+		return origValue;
+	}
+}
+- (void)_setBiasEscapeButtonVisible:(int)arg1 {
+	if ( enableTweak && oneHandedKeyboard != 999 ) {
+		%orig(0);
+	} else {
+		%orig;
+	}
+}
+%end
+
+%hook UIInputSwitcherView
+- (int)_isHandBiasSwitchVisible {
+	int origValue = %orig;
+	if ( enableTweak && oneHandedKeyboard != 999 ) {
+		return 0;
+	} else {
+		return origValue;
+	}
+}
+%end
+
+%hook UIKBRenderFactory
+- (int)useBlueThemingForKey:(id)arg1 {
+	int origValue = %orig;
+	if ( enableTweak && useBlueThemingForKey != 999 ) {
+		return useBlueThemingForKey;
 	} else {
 		return origValue;
 	}
