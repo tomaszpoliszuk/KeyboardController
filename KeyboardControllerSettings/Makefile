@@ -1,11 +1,11 @@
-TARGET = iphone:clang::12
-ARCHS = arm64 arm64e
+TARGET = iphone:clang::9
+ARCHS = armv7 armv7s arm64 arm64e
 
 include $(THEOS)/makefiles/common.mk
 
-BUNDLE_NAME = KeyboardControllerPreferences
+BUNDLE_NAME = KeyboardControllerSettings
 
-$(BUNDLE_NAME)_FILES = KeyboardControllerMainPreferences.mm
+$(BUNDLE_NAME)_FILES = KeyboardControllerMainSettings.mm
 $(BUNDLE_NAME)_INSTALL_PATH = /Library/PreferenceBundles
 $(BUNDLE_NAME)_FRAMEWORKS = UIKit
 $(BUNDLE_NAME)_PRIVATE_FRAMEWORKS = Preferences

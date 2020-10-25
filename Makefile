@@ -3,8 +3,8 @@ DEBUG = 0
 
 INSTALL_TARGET_PROCESSES = SpringBoard
 
-ARCHS = arm64 arm64e
-TARGET = iphone:clang::12
+ARCHS = armv7 armv7s arm64 arm64e
+TARGET = iphone:clang::9
 
 include $(THEOS)/makefiles/common.mk
 
@@ -16,5 +16,5 @@ $(TWEAK_NAME)_LIBRARIES = MobileGestalt
 
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-SUBPROJECTS += KeyboardControllerPreferences
+SUBPROJECTS += KeyboardControllerSettings
 include $(THEOS_MAKE_PATH)/aggregate.mk

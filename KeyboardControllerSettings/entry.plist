@@ -3,8 +3,8 @@
 		cell = PSLinkCell;
 		isController = 1;
 		label = "Keyboard Controller";
-		bundle = KeyboardControllerPreferences;
-		detail = KeyboardControllerMainPreferences;
+		bundle = KeyboardControllerSettings;
+		detail = KeyboardControllerMainSettings;
 		icon = icons/KeyboardController.png;
 	};
 }

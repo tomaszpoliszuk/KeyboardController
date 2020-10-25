@@ -1,11 +1,15 @@
 Package: com.tomaszpoliszuk.keyboardcontroller
-Depends: firmware (>= 12.0), mobilesubstrate, preferenceloader
+Depends: firmware (>= 10.0), mobilesubstrate, preferenceloader
 Name: Keyboard Controller
-Version: 1.1
+Version: 1.1.1
 Architecture: iphoneos-arm
 Description: Control your Keyboard
+Homepage: http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=keyboardcontrollerDp
+Depiction: http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=keyboardcontrollerDp
+Maintainer: BigBoss <bigboss@thebigboss.org>
 Author: Tomasz Poliszuk
+Sponsor: thebigboss.org <http://thebigboss.org>
 Section: Tweaks
 dev: tomaszpoliszuk
-Tag: purpose::extension, compatible::ios13
+Tag: purpose::extension
 Icon: file:///Library/PreferenceBundles/KeyboardControllerPreferences.bundle/icons/KeyboardController@3x.png

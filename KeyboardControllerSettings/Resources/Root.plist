@@ -1142,6 +1142,7 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 		{
 			cell = PSGroupCell;
 			label = "Trackpad Mode";
+			key = "trackpadModeGroup";
 		},
 		{
 			cell = PSSegmentCell;
@@ -1166,6 +1167,7 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 		{
 			cell = PSGroupCell;
 			label = "Return Key Styling";
+			key = "returnKeyStylingGroup";
 		},
 		{
 			cell = PSSegmentCell;
@@ -1208,6 +1210,7 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 		{
 			cell = PSGroupCell;
 			label = "Globe Button";
+			key = "shouldShowInternationalKeyGroup";
 		},
 		{
 			cell = PSSegmentCell;
@@ -1250,72 +1253,6 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 			label = " ";
 		},
 		{
-			cell = PSLinkCell;
-			label = "Experimental features";
-			detail = "PSListController";
-			title = "Experimental features";
-			items = (
-				{
-					cell = PSGroupCell;
-					label = "Use at your own risk only!";
-					footerText = "Buggy features that someone might find useful.";
-				},
-				{
-					cell = PSGroupCell;
-					label = "One-Handed Keyboard";
-				},
-				{
-					cell = PSSegmentCell;
-					key = "oneHandedKeyboard";
-					default = 999;
-					defaults = com.tomaszpoliszuk.keyboardcontroller;
-					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
-					validValues = (
-						999,
-						2,
-						1,
-					);
-					validTitles = (
-						Default,
-						"Force Left",
-						"Force Right",
-					);
-					height = 55;
-				},
-				{
-					cell = PSGroupCell;
-					label = "Blue Theming of Keyboard";
-				},
-				{
-					cell = PSSegmentCell;
-					key = "useBlueThemingForKey";
-					default = 999;
-					defaults = com.tomaszpoliszuk.keyboardcontroller;
-					PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
-					validValues = (
-						999,
-						0,
-						1,
-					);
-					validTitles = (
-						Default,
-						Disable,
-						Enable,
-					);
-					height = 55;
-				},
-				{
-					cell = PSGroupCell;
-					label = "Testing area";
-				},
-				{
-					cell = PSEditTextCell;
-					default = "";
-					placeholder = "Test keyboard here";
-				},
-			);
-		},
-		{
 			cell = PSGroupCell;
 			label = "Testing area";
 		},
@@ -1329,36 +1266,96 @@ The keyboard follows the dragging touch offscreen, and can be pulled upward agai
 			label = " ";
 		},
 		{
+			cell = PSGroupCell;
+			label = "Experimental features - Use at your own risk only!";
+			footerText = "Buggy features that someone might find useful.";
+		},
+		{
+			cell = PSStaticTextCell;
+			label = "One-Handed Keyboard";
+			key = "oneHandedKeyboardGroup";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "oneHandedKeyboard";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				2,
+				1,
+			);
+			validTitles = (
+				Default,
+				"Force Left",
+				"Force Right",
+			);
+			height = 55;
+		},
+		{
+			cell = PSStaticTextCell;
+			label = "Blue Theming of Keyboard";
+		},
+		{
+			cell = PSSegmentCell;
+			key = "useBlueThemingForKey";
+			default = 999;
+			defaults = com.tomaszpoliszuk.keyboardcontroller;
+			PostNotification = "com.tomaszpoliszuk.keyboardcontroller.settingschanged";
+			validValues = (
+				999,
+				0,
+				1,
+			);
+			validTitles = (
+				Default,
+				Disable,
+				Enable,
+			);
+			height = 55;
+		},
+		{
+			cell = PSGroupCell;
+			label = " ";
+		},
+		{
 			cell = PSButtonCell;
-			label = "Reset Settings";
+			label = RESET_SETTINGS;
 			action = resetSettings;
 			alignment = center;
 		},
 		{
 			cell = PSGroupCell;
-			label = "Related Links";
+			label = RELATED_LINKS;
 		},
 		{
 			cell = PSButtonCell;
-			label = "Source Code";
+			label = SOURCE_CODE;
 			action = sourceCode;
 			icon = "icons/code.png";
 		},
 		{
 			cell = PSButtonCell;
-			label = "Known Issues";
+			label = KNOWN_ISSUES;
 			action = knownIssues;
 			icon = "icons/bug.png";
 		},
 		{
 			cell = PSButtonCell;
-			label = "Tomasz Poliszuk @ Github";
+			label = TOMASZ_POLISZUK_AT_BIGBOSS;
+			action = TomaszPoliszukAtBigBoss;
+			icon = "icons/packages.png";
+		},
+		{
+			cell = PSButtonCell;
+			label = TOMASZ_POLISZUK_AT_GITHUB;
 			action = TomaszPoliszukAtGithub;
 			icon = "icons/github.png";
 		},
 		{
 			cell = PSButtonCell;
-			label = "Tomasz Poliszuk @ Twitter";
+			label = TOMASZ_POLISZUK_AT_TWITTER;
 			action = TomaszPoliszukAtTwitter;
 			icon = "icons/twitter.png";
 		},

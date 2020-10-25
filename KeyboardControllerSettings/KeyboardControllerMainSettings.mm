@@ -1,17 +1,38 @@
 #import <Preferences/PSListController.h>
+#import <Preferences/PSSpecifier.h>
 
-NSString *domainString = @"com.tomaszpoliszuk.keyboardcontroller";
+NSString *const domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 
 @interface PSListController (KeyboardController)
 @end
-
-@interface KeyboardControllerMainPreferences : PSListController
+@interface KeyboardControllerMainSettings : PSListController {
+	NSMutableArray *removeSpecifiers;
+}
 @end
 
-@implementation KeyboardControllerMainPreferences
+@implementation KeyboardControllerMainSettings
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+		if (kCFCoreFoundationVersionNumber < 1665.15) {
+			removeSpecifiers = [[NSMutableArray alloc]init];
+			for(PSSpecifier* specifier in _specifiers) {
+				NSString* key = [specifier propertyForKey:@"key"];
+				if(
+					[key hasPrefix:@"shouldShowInternationalKey"]
+					||
+					[key hasPrefix:@"returnKeyStyling"]
+					||
+					[key hasPrefix:@"trackpadMode"]
+					||
+					[key hasPrefix:@"oneHandedKeyboard"]
+				) {
+					[removeSpecifiers addObject:specifier];
+				}
+
+			}
+			[_specifiers removeObjectsInArray:removeSpecifiers];
+		}
 	}
 	return _specifiers;
 }
@@ -30,7 +51,6 @@ NSString *domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 	[resetSettingsAlert addAction:confirm];
 	[self presentViewController:resetSettingsAlert animated:YES completion:nil];
 }
-
 -(void)sourceCode {
 	NSURL *sourceCode = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/KeyboardController"];
 	[[UIApplication sharedApplication] openURL:sourceCode options:@{} completionHandler:nil];
@@ -38,6 +58,12 @@ NSString *domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 -(void)knownIssues {
 	NSURL *knownIssues = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/KeyboardController/issues"];
 	[[UIApplication sharedApplication] openURL:knownIssues options:@{} completionHandler:nil];
+}
+-(void)TomaszPoliszukAtBigBoss {
+	UIApplication *application = [UIApplication sharedApplication];
+	NSString *tweakName = @"Keyboard+Controller";
+	NSURL *twitterWebsite = [NSURL URLWithString:[@"http://apt.thebigboss.org/developer-packages.php?name=" stringByAppendingString:tweakName]];
+	[application openURL:twitterWebsite options:@{} completionHandler:nil];
 }
 -(void)TomaszPoliszukAtGithub {
 	UIApplication *application = [UIApplication sharedApplication];

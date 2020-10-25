@@ -2,10 +2,10 @@
 Control your Keyboard
 
 ## Compatibility
-iOS 12 and above
+iOS 10 and above
 
 ## What you can do with this tweak:
-* UI Style (Default, Light, Dark)
+* Select UI Style (Default, Light, Dark)
 * Edit Keyboard Type:
 	- Default
 	- Numbers and Punctuation
@@ -50,4 +50,3 @@ iOS 12 and above
 ![settings](screenshots/keyboardcontroller1.png)
 ![settings](screenshots/keyboardcontroller2.png)
 ![settings](screenshots/keyboardcontroller3.png)
-![settings](screenshots/keyboardcontroller4.png)
