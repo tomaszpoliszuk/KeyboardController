@@ -233,7 +233,11 @@ static void receivedNotification(
 - (long long)keyboardDismissMode {
 	long long origValue = %orig;
 	if ( enableTweak && keyboardDismissMode != 999 ) {
-		if (![[self _viewControllerForAncestor] isKindOfClass:%c(UICompatibilityInputViewController)]) {
+		if (
+			![[self _viewControllerForAncestor] isKindOfClass:%c(UICompatibilityInputViewController)]
+			&&
+			![[self _viewControllerForAncestor] isKindOfClass:%c(UICandidateViewController)]
+		) {
 			return keyboardDismissMode;
 		}
 	}
