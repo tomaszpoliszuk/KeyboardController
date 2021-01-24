@@ -37,7 +37,6 @@ static long long decimalPadKeyboard;
 static long long twitterKeyboard;
 static long long webSearchKeyboard;
 static long long asciiCapableNumberPadKeyboard;
-static long long alphabetKeyboard;
 
 static long long returnKeyTypeDefault;
 static long long returnKeyTypeGo;
@@ -103,7 +102,6 @@ void SettingsChanged() {
 	twitterKeyboard = [([tweakSettings valueForKey:@"twitterKeyboard"] ?: @(9)) integerValue];
 	webSearchKeyboard = [([tweakSettings valueForKey:@"webSearchKeyboard"] ?: @(10)) integerValue];
 	asciiCapableNumberPadKeyboard = [([tweakSettings valueForKey:@"asciiCapableNumberPadKeyboard"] ?: @(11)) integerValue];
-	alphabetKeyboard = [([tweakSettings valueForKey:@"alphabetKeyboard"] ?: @(12)) integerValue];
 
 	returnKeyTypeDefault = [([tweakSettings valueForKey:@"returnKeyTypeDefault"] ?: @(0)) integerValue];
 	returnKeyTypeGo = [([tweakSettings valueForKey:@"returnKeyTypeGo"] ?: @(1)) integerValue];
@@ -185,8 +183,6 @@ static void receivedNotification(
 		return webSearchKeyboard;
 	} else if ( origValue == 11 && enableTweak ) {
 		return asciiCapableNumberPadKeyboard;
-	} else if ( origValue == 12 && enableTweak ) {
-		return alphabetKeyboard;
 	} else {
 		return origValue;
 	}
