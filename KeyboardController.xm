@@ -3,8 +3,7 @@
  *
  * Keyboard Controller is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * the Free Software Foundation, version 3 of the License.
  *
  * Keyboard Controller is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,8 +15,22 @@
  */
 
 
+//	#define kIsiOS4_1AndUp (kCFCoreFoundationVersionNumber >= 550.38)
+//	#define kIsiOS5AndUp (kCFCoreFoundationVersionNumber >= 675.00)
+//	#define kIsiOS7AndUp (kCFCoreFoundationVersionNumber >= 847.20)
+//	#define kIsiOS8AndUp (kCFCoreFoundationVersionNumber >= 1140.10)
+//	#define kIsiOS9AndUp (kCFCoreFoundationVersionNumber >= 1240.10)
+//	#define kIsiOS10AndUp (kCFCoreFoundationVersionNumber >= 1348.00)
+//	#define kIsiOS11AndUp (kCFCoreFoundationVersionNumber >= 1443.00)
+//	#define kIsiOS12AndUp (kCFCoreFoundationVersionNumber >= 1556.00)
+//	#define kIsiOS13AndUp (kCFCoreFoundationVersionNumber >= 1665.15)
+
 #define userSettingsFile @"/var/mobile/Library/Preferences/com.tomaszpoliszuk.keyboardcontroller.plist"
 #define packageName "com.tomaszpoliszuk.keyboardcontroller"
+
+@interface UIView (KeyboardController)
+-(id)_viewControllerForAncestor;
+@end
 
 NSMutableDictionary *tweakSettings;
 
@@ -67,7 +80,11 @@ static int oneHandedKeyboard;
 
 static int useBlueThemingForKey;
 
-void SettingsChanged() {
+static int feedbackType;
+
+static int feedbackWhen;
+
+static void SettingsChanged() {
 	CFArrayRef keyList = CFPreferencesCopyKeyList(CFSTR(packageName), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if(keyList) {
 		tweakSettings = (NSMutableDictionary *)CFBridgingRelease(
@@ -131,6 +148,10 @@ void SettingsChanged() {
 	oneHandedKeyboard = [([tweakSettings valueForKey:@"oneHandedKeyboard"] ?: @(999)) integerValue];
 
 	useBlueThemingForKey = [([tweakSettings objectForKey:@"useBlueThemingForKey"] ?: @(999)) integerValue];
+
+	feedbackType = [([tweakSettings objectForKey:@"feedbackType"] ?: @(0)) integerValue];
+
+	feedbackWhen = [([tweakSettings objectForKey:@"feedbackWhen"] ?: @(0)) integerValue];
 }
 
 static void receivedNotification(
@@ -143,19 +164,13 @@ static void receivedNotification(
 	SettingsChanged();
 }
 
-
-@interface UIView (KeyboardController)
--(id)_viewControllerForAncestor;
-@end
-
 %hook UITextInputTraits
 - (long long)keyboardAppearance {
 	long long origValue = %orig;
 	if ( enableTweak && uiStyle != 999 ) {
 		return uiStyle;
-	} else {
-		return origValue;
 	}
+	return origValue;
 }
 - (long long)keyboardType {
 	long long origValue = %orig;
@@ -183,9 +198,36 @@ static void receivedNotification(
 		return webSearchKeyboard;
 	} else if ( origValue == 11 && enableTweak ) {
 		return asciiCapableNumberPadKeyboard;
-	} else {
-		return origValue;
 	}
+	return origValue;
+}
+- (void)setKeyboardType:(long long)arg1 {
+	if ( arg1 == 0 && enableTweak ) {
+		arg1 = defaultKeyboard;
+	} else if ( arg1 == 1 && enableTweak ) {
+		arg1 = asciiCapableKeyboard;
+	} else if ( arg1 == 2 && enableTweak ) {
+		arg1 = numbersAndPunctuationKeyboard;
+	} else if ( arg1 == 3 && enableTweak ) {
+		arg1 = urlKeyboard;
+	} else if ( arg1 == 4 && enableTweak ) {
+		arg1 = numberPadKeyboard;
+	} else if ( arg1 == 5 && enableTweak ) {
+		arg1 = phonePadKeyboard;
+	} else if ( arg1 == 6 && enableTweak ) {
+		arg1 = namePhonePadKeyboard;
+	} else if ( arg1 == 7 && enableTweak ) {
+		arg1 = emailAddressKeyboard;
+	} else if ( arg1 == 8 && enableTweak ) {
+		arg1 = decimalPadKeyboard;
+	} else if ( arg1 == 9 && enableTweak ) {
+		arg1 = twitterKeyboard;
+	} else if ( arg1 == 10 && enableTweak ) {
+		arg1 = webSearchKeyboard;
+	} else if ( arg1 == 11 && enableTweak ) {
+		arg1 = asciiCapableNumberPadKeyboard;
+	}
+	%orig(arg1);
 }
 - (long long)returnKeyType {
 	long long origValue = %orig;
@@ -213,33 +255,8 @@ static void receivedNotification(
 		return returnKeyTypeEmergencyCall;
 	} else if ( origValue == 11 && enableTweak ) {
 		return returnKeyTypeContinue;
-	} else {
-		return origValue;
 	}
-}
-- (int)forceDisableDictation {
-	int origValue = %orig;
-	if ( enableTweak && dictationButton != 999 ) {
-		return !dictationButton;
-	} else {
-		return origValue;
-	}
-}
-- (int)forceEnableDictation {
-	int origValue = %orig;
-	if ( enableTweak && dictationButton != 999 ) {
-		return dictationButton;
-	} else {
-		return origValue;
-	}
-}
-- (int)suppressReturnKeyStyling {
-	int origValue = %orig;
-	if ( enableTweak && returnKeyStyling != 999 ) {
-		return !returnKeyStyling;
-	} else {
-		return origValue;
-	}
+	return origValue;
 }
 %end
 
@@ -258,6 +275,163 @@ static void receivedNotification(
 	return origValue;
 }
 %end
+
+%hook UIKeyboardEmojiCollectionInputView
+- (int)skinToneWasUsedForEmoji:(id)arg1 {
+	int origValue = %orig;
+	if ( enableTweak && selectingSkinToneForEmoji != 999 ) {
+		return selectingSkinToneForEmoji;
+	}
+	return origValue;
+}
+%end
+
+%hook UIKeyboardEmojiPreferences
+- (int)hasDisplayedSkinToneHelp {
+	int origValue = %orig;
+	if ( enableTweak && selectingSkinToneForEmoji != 999 ) {
+		return selectingSkinToneForEmoji;
+	}
+	return origValue;
+}
+%end
+
+%hook UIKeyboardLayoutStar
+- (long long)currentHandBias {
+	long long origValue = %orig;
+	if ( enableTweak && oneHandedKeyboard != 999 ) {
+		return oneHandedKeyboard;
+	}
+	return origValue;
+}
+- (void)_setBiasEscapeButtonVisible:(int)arg1 {
+	if ( enableTweak && oneHandedKeyboard != 999 ) {
+		%orig(0);
+	} else {
+		%orig;
+	}
+}
+- (int)shouldShowDictationKey {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return dictationButton;
+	}
+	return origValue;
+}
+%end
+
+%hook UIKeyboardSplitTransitionView
+- (int)showDictationKey {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return dictationButton;
+	}
+	return origValue;
+}
+%end
+
+%hook UIPeripheralHost
+- (int)hasDictationKeyboard {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return dictationButton;
+	}
+	return origValue;
+}
+%end
+
+%hook UIInputSwitcherView
+- (int)_isHandBiasSwitchVisible {
+	int origValue = %orig;
+	if ( enableTweak && oneHandedKeyboard != 999 ) {
+		return 0;
+	}
+	return origValue;
+}
+%end
+
+%hook UIKBRenderFactory
+- (int)useBlueThemingForKey:(id)arg1 {
+	int origValue = %orig;
+	if ( enableTweak && useBlueThemingForKey != 999 ) {
+		return useBlueThemingForKey;
+	}
+	return origValue;
+}
+%end
+
+
+%group iOS8
+
+%hook UITextInputTraits
+- (int)suppressReturnKeyStyling {
+	int origValue = %orig;
+	if ( enableTweak && returnKeyStyling != 999 ) {
+		return !returnKeyStyling;
+	}
+	return origValue;
+}
+%end
+
+%end
+
+
+%group iOS9_3_4
+
+%hook UITextInputTraits
+- (int)forceDisableDictation {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return !dictationButton;
+	}
+	return origValue;
+}
+%end
+
+%end
+
+
+%group iOS10
+
+%hook UITextInputTraits
+- (int)forceEnableDictation {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return dictationButton;
+	}
+	return origValue;
+}
+%end
+
+%hook UIKeyboardImpl
+- (bool)shouldShowDictationKey {
+	int origValue = %orig;
+	if ( enableTweak && dictationButton != 999 ) {
+		return dictationButton;
+	}
+	return origValue;
+}
+%end
+
+%end
+
+
+%group iOS11
+
+%hook UIKeyboardImpl
+- (int)shouldShowInternationalKey {
+	int origValue = %orig;
+	if ( enableTweak && shouldShowInternationalKey != 999 ) {
+		return shouldShowInternationalKey;
+	}
+	return origValue;
+}
+%end
+
+%end
+
+
+%group iOS12
 
 %hook _UIKeyboardTextSelectionInteraction
 - (int)forceTouchGestureRecognizerShouldBegin:(id)arg1 {
@@ -284,75 +458,73 @@ static void receivedNotification(
 }
 %end
 
-%hook UIKeyboardImpl
-- (int)shouldShowInternationalKey {
-	int origValue = %orig;
-	if ( enableTweak && shouldShowInternationalKey != 999 ) {
-		return shouldShowInternationalKey;
-	} else {
-		return origValue;
-	}
-}
 %end
 
-%hook UIKeyboardEmojiCollectionInputView
-- (int)skinToneWasUsedForEmoji:(id)arg1 {
-	int origValue = %orig;
-	if ( enableTweak && selectingSkinToneForEmoji != 999 ) {
-		return selectingSkinToneForEmoji;
-	} else {
-		return origValue;
-	}
-}
-%end
 
-%hook UIKeyboardEmojiPreferences
-- (int)hasDisplayedSkinToneHelp {
-	int origValue = %orig;
-	if ( enableTweak && selectingSkinToneForEmoji != 999 ) {
-		return selectingSkinToneForEmoji;
-	} else {
-		return origValue;
-	}
-}
-%end
+%hook UIKeyboardLayout
 
-%hook UIKeyboardLayoutStar
-- (long long)currentHandBias {
-	long long origValue = %orig;
-	if ( enableTweak && oneHandedKeyboard != 999 ) {
-		return oneHandedKeyboard;
-	} else {
-		return origValue;
+-(void)touchDown:(id)arg1 {
+	%orig;
+	if (@available(iOS 13, *)) {
+		if ( ![[NSProcessInfo processInfo] isLowPowerModeEnabled] ) {
+			if ( ( feedbackType == 0 && feedbackWhen == 1 ) || feedbackType == 0 ) {
+				return;
+			} else if ( feedbackType == 1 && feedbackWhen == 0 ) {
+				UISelectionFeedbackGenerator *generator = [[UISelectionFeedbackGenerator alloc] init];
+				[generator prepare];
+				[generator selectionChanged];
+				generator = nil;
+			} else if ( feedbackWhen == 0 ) {
+				int feedbackTypeName;
+				if ( feedbackType == 2 ) {
+					feedbackTypeName = UIImpactFeedbackStyleLight;
+				} else if ( feedbackType == 3 ) {
+					feedbackTypeName = UIImpactFeedbackStyleMedium;
+				} else if ( feedbackType == 4 ) {
+					feedbackTypeName = UIImpactFeedbackStyleHeavy;
+				} else if ( feedbackType == 5 ) {
+					feedbackTypeName = UIImpactFeedbackStyleSoft;
+				} else {
+					feedbackTypeName = UIImpactFeedbackStyleRigid;
+				}
+				UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]initWithStyle:feedbackTypeName];
+				[generator prepare];
+				[generator impactOccurred];
+				generator = nil;
+			}
+		}
 	}
 }
-- (void)_setBiasEscapeButtonVisible:(int)arg1 {
-	if ( enableTweak && oneHandedKeyboard != 999 ) {
-		%orig(0);
-	} else {
-		%orig;
-	}
-}
-%end
-
-%hook UIInputSwitcherView
-- (int)_isHandBiasSwitchVisible {
-	int origValue = %orig;
-	if ( enableTweak && oneHandedKeyboard != 999 ) {
-		return 0;
-	} else {
-		return origValue;
-	}
-}
-%end
-
-%hook UIKBRenderFactory
-- (int)useBlueThemingForKey:(id)arg1 {
-	int origValue = %orig;
-	if ( enableTweak && useBlueThemingForKey != 999 ) {
-		return useBlueThemingForKey;
-	} else {
-		return origValue;
+-(void)touchUp:(id)arg1 {
+	%orig;
+	if (@available(iOS 13, *)) {
+		if ( ![[NSProcessInfo processInfo] isLowPowerModeEnabled] ) {
+			if ( ( feedbackType == 0 && feedbackWhen == 0 ) || feedbackType == 0 ) {
+				return;
+			} else if ( feedbackType == 1 && feedbackWhen == 1 ) {
+				UISelectionFeedbackGenerator *generator = [[UISelectionFeedbackGenerator alloc] init];
+				[generator prepare];
+				[generator selectionChanged];
+				generator = nil;
+			} else if ( feedbackWhen == 1 ) {
+				int feedbackTypeName;
+				if (feedbackType == 2) {
+					feedbackTypeName = UIImpactFeedbackStyleLight;
+				} else if ( feedbackType == 3 ) {
+					feedbackTypeName = UIImpactFeedbackStyleMedium;
+				} else if ( feedbackType == 4 ) {
+					feedbackTypeName = UIImpactFeedbackStyleHeavy;
+				} else if ( feedbackType == 5 ) {
+					feedbackTypeName = UIImpactFeedbackStyleSoft;
+				} else {
+					feedbackTypeName = UIImpactFeedbackStyleRigid;
+				}
+				UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]initWithStyle:feedbackTypeName];
+				[generator prepare];
+				[generator impactOccurred];
+				generator = nil;
+			}
+		}
 	}
 }
 %end
@@ -370,6 +542,21 @@ static void receivedNotification(
 			NULL,
 			CFNotificationSuspensionBehaviorDeliverImmediately
 		);
+		if (@available(iOS 8, *)) {
+			%init(iOS8);
+		}
+		if (@available(iOS 9.3.4, *)) {
+			%init(iOS9_3_4);
+		}
+		if (@available(iOS 10, *)) {
+			%init(iOS10);
+		}
+		if (@available(iOS 11, *)) {
+			%init(iOS11);
+		}
+		if (@available(iOS 12, *)) {
+			%init(iOS12);
+		}
 		%init;
 	}
 }

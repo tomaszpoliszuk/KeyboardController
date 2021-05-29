@@ -1,5 +1,5 @@
 Package: com.tomaszpoliszuk.keyboardcontroller
-Depends: firmware (>= 10.0), mobilesubstrate, preferenceloader
+Depends: firmware (>= 8.0), mobilesubstrate, preferenceloader
 Name: Keyboard Controller
 Version: 1.1.2
 Architecture: iphoneos-arm
