@@ -18,113 +18,88 @@
 #include "headers.h"
 
 @implementation KeyboardControllerKeyboardOptions
+-(PSSpecifier *)createGroupSpecifierNamed:(NSString *)name key:(NSString *)key {
+	PSSpecifier * specifier = [PSSpecifier groupSpecifierWithName:name];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	return specifier;
+}
+-(PSSpecifier *)createSegmentSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
+		target:self
+		set:@selector(setPreferenceValue:specifier:)
+		get:@selector(readPreferenceValue:)
+		detail:nil
+		cell:PSSegmentCell
+		edit:nil
+	];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	[specifier setProperty:defaultValue forKey:@"default"];
+	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
+	[specifier setProperty:@"55" forKey:@"height"];
+	return specifier;
+}
+-(PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key placeholder:(NSString *)placeholder {
+	PSTextFieldSpecifier * specifier = [PSTextFieldSpecifier preferenceSpecifierNamed:name
+		target:self
+		set:@selector(setPreferenceValue:specifier:)
+		get:@selector(readPreferenceValue:)
+		detail:nil
+		cell:PSEditTextCell
+		edit:nil
+	];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	[specifier setPlaceholder:placeholder];
+	return specifier;
+}
 - (NSArray *)specifiers {
 	if ( !_specifiers ) {
-
 		_specifiers = [NSMutableArray new];
 
 		if (@available(iOS 10, *)) {
-//		if (kIsiOS10AndUp) {
-			PSSpecifier* dictationButtonGroup = [PSSpecifier groupSpecifierWithName:@"Dictation Button"];
-			[dictationButtonGroup setProperty:@"dictationButtonGroup" forKey:@"key"];
+			PSSpecifier * dictationButtonGroup = [self createGroupSpecifierNamed:@"Dictation Button" key:@"dictationButtonGroup"];
 			[_specifiers addObject:dictationButtonGroup];
 
-			PSSpecifier *dictationButton = [PSSpecifier preferenceSpecifierNamed:@"dictationButton"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSSegmentCell
-				edit:nil
-			];
-			[dictationButton setProperty:@"999" forKey:@"default"];
-			[dictationButton setProperty:@"dictationButton" forKey:@"key"];
+			PSSpecifier * dictationButton = [self createSegmentSpecifierNamed:@"dictationButton" key:@"dictationButton" default:@"999"];
 			[dictationButton setValues:@[ @"999", @"0" ] titles:@[ @"Default", @"Disable" ]];
-			[dictationButton setProperty:kPackage forKey:@"defaults"];
-			[dictationButton setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[dictationButton setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:dictationButton];
 		}
 
 		if (@available(iOS 11, *)) {
-//		if (kIsiOS11AndUp) {
-			PSSpecifier* shouldShowInternationalKeyGroup = [PSSpecifier groupSpecifierWithName:@"Globe Button"];
-			[shouldShowInternationalKeyGroup setProperty:@"shouldShowInternationalKeyGroup" forKey:@"key"];
+			PSSpecifier * shouldShowInternationalKeyGroup = [self createGroupSpecifierNamed:@"Globe Button" key:@"shouldShowInternationalKeyGroup"];
 			[_specifiers addObject:shouldShowInternationalKeyGroup];
 
-			PSSpecifier *shouldShowInternationalKey = [PSSpecifier preferenceSpecifierNamed:@"ShowInternationalKey"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSSegmentCell
-				edit:nil
-			];
-			[shouldShowInternationalKey setProperty:@"999" forKey:@"default"];
-			[shouldShowInternationalKey setProperty:@"shouldShowInternationalKey" forKey:@"key"];
+			PSSpecifier * shouldShowInternationalKey = [self createSegmentSpecifierNamed:@"shouldShowInternationalKey" key:@"shouldShowInternationalKey" default:@"999"];
 			[shouldShowInternationalKey setValues:@[ @"999", @"0" ] titles:@[ @"Default", @"Disable" ]];
-			[shouldShowInternationalKey setProperty:kPackage forKey:@"defaults"];
-			[shouldShowInternationalKey setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[shouldShowInternationalKey setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:shouldShowInternationalKey];
 		}
 
 //		if (@available(iOS 8, *)) {
-//		if (kIsiOS8AndUp) {
-			PSSpecifier* returnKeyStylingGroup = [PSSpecifier groupSpecifierWithName:@"Return Key Styling"];
-			[returnKeyStylingGroup setProperty:@"returnKeyStylingGroup" forKey:@"key"];
+			PSSpecifier * returnKeyStylingGroup = [self createGroupSpecifierNamed:@"Return Key Styling" key:@"returnKeyStylingGroup"];
 			[_specifiers addObject:returnKeyStylingGroup];
 
-			PSSpecifier *returnKeyStyling = [PSSpecifier preferenceSpecifierNamed:@"returnKeyStyling"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSSegmentCell
-				edit:nil
-			];
-			[returnKeyStyling setProperty:@"999" forKey:@"default"];
-			[returnKeyStyling setProperty:@"returnKeyStyling" forKey:@"key"];
+			PSSpecifier * returnKeyStyling = [self createSegmentSpecifierNamed:@"returnKeyStyling" key:@"returnKeyStyling" default:@"999"];
 			[returnKeyStyling setValues:@[ @"999", @"0", @"1" ] titles:@[ @"Default", @"Disable", @"Enable" ]];
-			[returnKeyStyling setProperty:kPackage forKey:@"defaults"];
-			[returnKeyStyling setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[returnKeyStyling setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:returnKeyStyling];
 //		}
 
-		PSSpecifier* selectingSkinToneForEmojiGroup = [PSSpecifier groupSpecifierWithName:@"Selecting skin tone for emoji"];
-		[selectingSkinToneForEmojiGroup setProperty:@"selectingSkinToneForEmojiGroup" forKey:@"key"];
+		PSSpecifier * selectingSkinToneForEmojiGroup = [self createGroupSpecifierNamed:@"Selecting skin tone for emoji" key:@"selectingSkinToneForEmojiGroup"];
 		[_specifiers addObject:selectingSkinToneForEmojiGroup];
 
-		PSSpecifier *selectingSkinToneForEmoji = [PSSpecifier preferenceSpecifierNamed:@"selectingSkinToneForEmoji"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSSegmentCell
-			edit:nil
-		];
-		[selectingSkinToneForEmoji setProperty:@"999" forKey:@"default"];
-		[selectingSkinToneForEmoji setProperty:@"selectingSkinToneForEmoji" forKey:@"key"];
+		PSSpecifier * selectingSkinToneForEmoji = [self createSegmentSpecifierNamed:@"selectingSkinToneForEmoji" key:@"selectingSkinToneForEmoji" default:@"999"];
 		[selectingSkinToneForEmoji setValues:@[ @"999", @"1" ] titles:@[ @"Default", @"Disable" ]];
-		[selectingSkinToneForEmoji setProperty:kPackage forKey:@"defaults"];
-		[selectingSkinToneForEmoji setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[selectingSkinToneForEmoji setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:selectingSkinToneForEmoji];
 
-		PSSpecifier* testKeyboardGroup = [PSSpecifier groupSpecifierWithName:@"Testing area"];
+		PSSpecifier * testKeyboardGroup = [PSSpecifier groupSpecifierWithName:@"Testing area"];
 		[_specifiers addObject:testKeyboardGroup];
 
-		PSTextFieldSpecifier *testKeyboard = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
-		[testKeyboard setPlaceholder:@"Test keyboard here"];
-
+		PSTextFieldSpecifier * testKeyboard = [self createEditTextSpecifierNamed:@"" key:@"testKeyboard" placeholder:@"Test keyboard here"];
 		[_specifiers addObject:testKeyboard];
 	}
 	return _specifiers;

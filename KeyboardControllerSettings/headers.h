@@ -23,21 +23,11 @@ NSString *const domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 #define kPackage @"com.tomaszpoliszuk.keyboardcontroller"
 #define kSettingsChanged @"com.tomaszpoliszuk.keyboardcontroller.settingschanged"
 
-#define kIsiOS4_1AndUp (kCFCoreFoundationVersionNumber >= 550.38)
-#define kIsiOS5AndUp (kCFCoreFoundationVersionNumber >= 675.00)
-#define kIsiOS7AndUp (kCFCoreFoundationVersionNumber >= 847.20)
-#define kIsiOS8AndUp (kCFCoreFoundationVersionNumber >= 1140.10)
-
-#define kIsiOS9AndUp (kCFCoreFoundationVersionNumber >= 1240.10)
-#define kIsiOS10AndUp (kCFCoreFoundationVersionNumber >= 1348.00)
-#define kIsiOS11AndUp (kCFCoreFoundationVersionNumber >= 1443.00)
-#define kIsiOS12AndUp (kCFCoreFoundationVersionNumber >= 1556.00)
-#define kIsiOS13AndUp (kCFCoreFoundationVersionNumber >= 1665.15)
-
 
 @interface UIDevice (KeyboardController)
 + (id)currentDevice;
 - (bool)_supportsForceTouch;
+- (id)_tapticEngine;
 @end
 
 @interface NSMutableArray (KeyboardController)
@@ -69,9 +59,8 @@ NSString *const domainString = @"com.tomaszpoliszuk.keyboardcontroller";
 @interface PSListController (KeyboardController)
 @end
 
-@interface KeyboardControllerMainSettings : PSListController {
-	NSMutableArray *removeSpecifiers;
-}
+@interface KeyboardControllerMainSettings : PSListController
+@property (nonatomic, strong) NSMutableArray * standardSpecifiers;
 @end
 
 @interface KeyboardControllerKeyboardTypeSettings : PSListController

@@ -18,66 +18,70 @@
 #include "headers.h"
 
 @implementation KeyboardControllerBetaOptions
+-(PSSpecifier *)createGroupSpecifierNamed:(NSString *)name key:(NSString *)key {
+	PSSpecifier * specifier = [PSSpecifier groupSpecifierWithName:name];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	return specifier;
+}
+-(PSSpecifier *)createSegmentSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
+		target:self
+		set:@selector(setPreferenceValue:specifier:)
+		get:@selector(readPreferenceValue:)
+		detail:nil
+		cell:PSSegmentCell
+		edit:nil
+	];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	[specifier setProperty:defaultValue forKey:@"default"];
+	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
+	[specifier setProperty:@"55" forKey:@"height"];
+	return specifier;
+}
+-(PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key placeholder:(NSString *)placeholder {
+	PSTextFieldSpecifier * specifier = [PSTextFieldSpecifier preferenceSpecifierNamed:name
+		target:self
+		set:@selector(setPreferenceValue:specifier:)
+		get:@selector(readPreferenceValue:)
+		detail:nil
+		cell:PSEditTextCell
+		edit:nil
+	];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	[specifier setPlaceholder:placeholder];
+	return specifier;
+}
 - (NSArray *)specifiers {
 	if ( !_specifiers ) {
-
 		_specifiers = [NSMutableArray new];
 
 		if (@available(iOS 11, *)) {
-
-			PSSpecifier* oneHandedKeyboardGroup = [PSSpecifier groupSpecifierWithName:@"One-Handed Keyboard"];
-			[oneHandedKeyboardGroup setProperty:@"oneHandedKeyboardGroup" forKey:@"key"];
+			PSSpecifier * oneHandedKeyboardGroup = [self createGroupSpecifierNamed:@"One-Handed Keyboard" key:@"oneHandedKeyboardGroup"];
 			[_specifiers addObject:oneHandedKeyboardGroup];
 
-			PSSpecifier *oneHandedKeyboard = [PSSpecifier preferenceSpecifierNamed:@"oneHandedKeyboard"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSSegmentCell
-				edit:nil
-			];
-			[oneHandedKeyboard setProperty:@"999" forKey:@"default"];
-			[oneHandedKeyboard setProperty:@"oneHandedKeyboard" forKey:@"key"];
+			PSSpecifier * oneHandedKeyboard = [self createSegmentSpecifierNamed:@"oneHandedKeyboard" key:@"oneHandedKeyboard" default:@"999"];
 			[oneHandedKeyboard setValues:@[ @"999", @"2", @"1" ] titles:@[ @"Default", @"Force Left", @"Force Right" ]];
-			[oneHandedKeyboard setProperty:kPackage forKey:@"defaults"];
-			[oneHandedKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[oneHandedKeyboard setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:oneHandedKeyboard];
 		}
 
-		PSSpecifier* useBlueThemingForKeyGroup = [PSSpecifier groupSpecifierWithName:@"Blue Theming of Keyboard"];
-		[useBlueThemingForKeyGroup setProperty:@"useBlueThemingForKeyGroup" forKey:@"key"];
+		PSSpecifier * useBlueThemingForKeyGroup = [self createGroupSpecifierNamed:@"Blue Theming of Keyboard" key:@"useBlueThemingForKeyGroup"];
 		[_specifiers addObject:useBlueThemingForKeyGroup];
 
-		PSSpecifier *useBlueThemingForKey = [PSSpecifier preferenceSpecifierNamed:@"useBlueThemingForKey"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSSegmentCell
-			edit:nil
-		];
-		[useBlueThemingForKey setProperty:@"999" forKey:@"default"];
-		[useBlueThemingForKey setProperty:@"useBlueThemingForKey" forKey:@"key"];
+		PSSpecifier * useBlueThemingForKey = [self createSegmentSpecifierNamed:@"useBlueThemingForKey" key:@"useBlueThemingForKey" default:@"999"];
 		[useBlueThemingForKey setValues:@[ @"999", @"2", @"1" ] titles:@[ @"Default", @"Disable", @"Enable" ]];
-		[useBlueThemingForKey setProperty:kPackage forKey:@"defaults"];
-		[useBlueThemingForKey setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[useBlueThemingForKey setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:useBlueThemingForKey];
 
-		PSSpecifier* testKeyboardGroup = [PSSpecifier groupSpecifierWithName:@"Testing area"];
+		PSSpecifier * testKeyboardGroup = [PSSpecifier groupSpecifierWithName:@"Testing area"];
 		[_specifiers addObject:testKeyboardGroup];
 
-		PSTextFieldSpecifier *testKeyboard = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
-		[testKeyboard setPlaceholder:@"Test keyboard here"];
+		PSTextFieldSpecifier * testKeyboard = [self createEditTextSpecifierNamed:@"" key:@"testKeyboard" placeholder:@"Test keyboard here"];
 		[_specifiers addObject:testKeyboard];
 	}
 	return _specifiers;

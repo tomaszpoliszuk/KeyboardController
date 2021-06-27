@@ -18,419 +18,219 @@
 #include "headers.h"
 
 @implementation KeyboardControllerKeyboardTypeSettings
+-(PSSpecifier *)createGroupSpecifierNamed:(NSString *)name footer:(NSString *)footer key:(NSString *)key {
+	PSSpecifier * specifier = [PSSpecifier groupSpecifierWithHeader:name footer:footer];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	return specifier;
+}
+-(PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
+		target:self
+		set:@selector(setPreferenceValue:specifier:)
+		get:@selector(readPreferenceValue:)
+		detail:NSClassFromString(@"PSListItemsController")
+		cell:PSLinkListCell
+		edit:nil
+	];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	[specifier setProperty:defaultValue forKey:@"default"];
+	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
+	return specifier;
+}
+-(PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+	PSTextFieldSpecifier * specifier = [PSTextFieldSpecifier preferenceSpecifierNamed:name
+		target:self
+		set:@selector(setPreferenceValue:specifier:)
+		get:@selector(readPreferenceValue:)
+		detail:nil
+		cell:PSEditTextCell
+		edit:nil
+	];
+	[specifier setProperty:name forKey:@"label"];
+	[specifier setProperty:key forKey:@"key"];
+	[specifier setProperty:key forKey:@"id"];
+	[specifier setProperty:defaultValue forKey:@"default"];
+	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
+	return specifier;
+}
 - (NSArray *)specifiers {
-
 	if ( !_specifiers ) {
-
 		_specifiers = [NSMutableArray new];
 
-		NSArray *titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad", @"Twitter", @"Web Search", @"ASCII Capable Number Pad" ];
-		NSArray *values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11" ];
+		NSArray * titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad", @"Twitter", @"Web Search" ];
+		NSArray * values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10" ];
 
-		if ( !kIsiOS10AndUp ) {
-			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad", @"Twitter", @"Web Search" ];
-			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10" ];
-		}
-//		if ( !kIsiOS7AndUp ) {
-//			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad", @"Twitter" ];
-//			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9" ];
-//		}
-//		if ( !kIsiOS5AndUp ) {
-//			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad" ];
-//			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8" ];
-//		}
-//		if ( !kIsiOS4_1AndUp ) {
+//		if (@available(iOS 4.1, *)) {
 //			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address" ];
 //			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7" ];
 //		}
+//		if (@available(iOS 5, *)) {
+//			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad" ];
+//			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8" ];
+//		}
+//		if (@available(iOS 7, *)) {
+//			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad", @"Twitter" ];
+//			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9" ];
+//		}
 
-		PSSpecifier* defaultKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies the default keyboard for the current input method."];
-		[defaultKeyboardGroup setProperty:@"defaultKeyboardGroup" forKey:@"key"];
+		if (@available(iOS 10, *)) {
+			titles = @[ @"Default", @"ASCII Capable", @"Numbers and Punctuation", @"URL", @"Number Pad", @"Phone Pad", @"Name Phone Pad", @"Email Address", @"Decimal Pad", @"Twitter", @"Web Search", @"ASCII Capable Number Pad" ];
+			values = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11" ];
+		}
+
+		PSSpecifier * defaultKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies the default keyboard for the current input method." key:@"defaultKeyboardGroup"];
 		[_specifiers addObject:defaultKeyboardGroup];
 
-		PSSpecifier *defaultKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Default"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[defaultKeyboard setProperty:@"0" forKey:@"default"];
-		[defaultKeyboard setProperty:@"defaultKeyboard" forKey:@"key"];
+		PSSpecifier * defaultKeyboard = [self createLinkListSpecifierNamed:@"Default" key:@"defaultKeyboard" default:@"0"];
 		[defaultKeyboard setValues:values titles:titles];
-		[defaultKeyboard setProperty:kPackage forKey:@"defaults"];
-		[defaultKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[defaultKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:defaultKeyboard];
 
-		PSTextFieldSpecifier *defaultKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * defaultKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"defaultKeyboardTry" default:nil];
 		[defaultKeyboardTry setKeyboardType:0 autoCaps:NO autoCorrection:NO];
 		[defaultKeyboardTry setPlaceholder:@"Test Default keyboard"];
 		[_specifiers addObject:defaultKeyboardTry];
 
-		PSSpecifier* asciiCapableKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard that displays standard ASCII characters."];
-		[asciiCapableKeyboardGroup setProperty:@"asciiCapableKeyboardGroup" forKey:@"key"];
+		PSSpecifier * asciiCapableKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard that displays standard ASCII characters." key:@"asciiCapableKeyboardGroup"];
 		[_specifiers addObject:asciiCapableKeyboardGroup];
 
-		PSSpecifier *asciiCapableKeyboard = [PSSpecifier preferenceSpecifierNamed:@"ASCII Capable"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[asciiCapableKeyboard setProperty:@"1" forKey:@"default"];
-		[asciiCapableKeyboard setProperty:@"asciiCapableKeyboard" forKey:@"key"];
+		PSSpecifier * asciiCapableKeyboard = [self createLinkListSpecifierNamed:@"ASCII Capable" key:@"asciiCapableKeyboard" default:@"1"];
 		[asciiCapableKeyboard setValues:values titles:titles];
-		[asciiCapableKeyboard setProperty:kPackage forKey:@"defaults"];
-		[asciiCapableKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[asciiCapableKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:asciiCapableKeyboard];
 
-		PSTextFieldSpecifier *asciiCapableKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * asciiCapableKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"asciiCapableKeyboardTry" default:nil];
 		[asciiCapableKeyboardTry setKeyboardType:1 autoCaps:NO autoCorrection:NO];
 		[asciiCapableKeyboardTry setPlaceholder:@"Test ASCII Capable keyboard"];
 		[_specifiers addObject:asciiCapableKeyboardTry];
 
-		PSSpecifier* numbersAndPunctuationKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies the numbers and punctuation keyboard."];
-		[numbersAndPunctuationKeyboardGroup setProperty:@"numbersAndPunctuationKeyboardGroup" forKey:@"key"];
+		PSSpecifier * numbersAndPunctuationKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies the numbers and punctuation keyboard." key:@"numbersAndPunctuationKeyboardGroup"];
 		[_specifiers addObject:numbersAndPunctuationKeyboardGroup];
 
-		PSSpecifier *numbersAndPunctuationKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Numbers and Punctuation"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[numbersAndPunctuationKeyboard setProperty:@"2" forKey:@"default"];
-		[numbersAndPunctuationKeyboard setProperty:@"numbersAndPunctuationKeyboard" forKey:@"key"];
+		PSSpecifier * numbersAndPunctuationKeyboard = [self createLinkListSpecifierNamed:@"Numbers and Punctuation" key:@"numbersAndPunctuationKeyboard" default:@"2"];
 		[numbersAndPunctuationKeyboard setValues:values titles:titles];
-		[numbersAndPunctuationKeyboard setProperty:kPackage forKey:@"defaults"];
-		[numbersAndPunctuationKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[numbersAndPunctuationKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:numbersAndPunctuationKeyboard];
 
-		PSTextFieldSpecifier *numbersAndPunctuationKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * numbersAndPunctuationKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"numbersAndPunctuationKeyboardTry" default:nil];
 		[numbersAndPunctuationKeyboardTry setKeyboardType:2 autoCaps:NO autoCorrection:NO];
 		[numbersAndPunctuationKeyboardTry setPlaceholder:@"Test Numbers and Punctuation keyboard"];
 		[_specifiers addObject:numbersAndPunctuationKeyboardTry];
 
-		PSSpecifier* urlKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard optimized for URL entry. This keyboard type prominently features the period (“.”) and slash (“/”) characters and the “.com” string."];
-		[urlKeyboardGroup setProperty:@"urlKeyboardGroup" forKey:@"key"];
+		PSSpecifier * urlKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard optimized for URL entry. This keyboard type prominently features the period (“.”) and slash (“/”) characters and the “.com” string." key:@"urlKeyboardGroup"];
 		[_specifiers addObject:urlKeyboardGroup];
 
-		PSSpecifier *urlKeyboard = [PSSpecifier preferenceSpecifierNamed:@"URL"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[urlKeyboard setProperty:@"3" forKey:@"default"];
-		[urlKeyboard setProperty:@"urlKeyboard" forKey:@"key"];
+		PSSpecifier * urlKeyboard = [self createLinkListSpecifierNamed:@"URL" key:@"urlKeyboard" default:@"3"];
 		[urlKeyboard setValues:values titles:titles];
-		[urlKeyboard setProperty:kPackage forKey:@"defaults"];
-		[urlKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[urlKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:urlKeyboard];
 
-		PSTextFieldSpecifier *urlKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * urlKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"urlKeyboardTry" default:nil];
 		[urlKeyboardTry setKeyboardType:3 autoCaps:NO autoCorrection:NO];
 		[urlKeyboardTry setPlaceholder:@"Test URL keyboard"];
 		[_specifiers addObject:urlKeyboardTry];
 
-		PSSpecifier* numberPadKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a numeric keypad designed for PIN entry. This keyboard type prominently features the numbers 0 through 9. This keyboard type does not support auto-capitalization."];
-		[numberPadKeyboardGroup setProperty:@"numberPadKeyboardGroup" forKey:@"key"];
+		PSSpecifier * numberPadKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a numeric keypad designed for PIN entry. This keyboard type prominently features the numbers 0 through 9. This keyboard type does not support auto-capitalization." key:@"numberPadKeyboardGroup"];
 		[_specifiers addObject:numberPadKeyboardGroup];
 
-		PSSpecifier *numberPadKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Number Pad keyboard"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[numberPadKeyboard setProperty:@"4" forKey:@"default"];
-		[numberPadKeyboard setProperty:@"numberPadKeyboard" forKey:@"key"];
+		PSSpecifier * numberPadKeyboard = [self createLinkListSpecifierNamed:@"Number Pad keyboard" key:@"numberPadKeyboard" default:@"4"];
 		[numberPadKeyboard setValues:values titles:titles];
-		[numberPadKeyboard setProperty:kPackage forKey:@"defaults"];
-		[numberPadKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[numberPadKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:numberPadKeyboard];
 
-		PSTextFieldSpecifier *numberPadKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * numberPadKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"numberPadKeyboardTry" default:nil];
 		[numberPadKeyboardTry setKeyboardType:4 autoCaps:NO autoCorrection:NO];
 		[numberPadKeyboardTry setPlaceholder:@"Test Number Pad keyboard"];
 		[_specifiers addObject:numberPadKeyboardTry];
 
-		PSSpecifier* phonePadKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keypad designed for entering telephone numbers. This keyboard type prominently features the numbers 0 through 9 and the “*” and “#” characters. This keyboard type does not support auto-capitalization."];
-		[phonePadKeyboardGroup setProperty:@"phonePadKeyboardGroup" forKey:@"key"];
+		PSSpecifier * phonePadKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keypad designed for entering telephone numbers. This keyboard type prominently features the numbers 0 through 9 and the “*” and “#” characters. This keyboard type does not support auto-capitalization." key:@"phonePadKeyboardGroup"];
 		[_specifiers addObject:phonePadKeyboardGroup];
 
-		PSSpecifier *phonePadKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Phone Pad keyboard"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[phonePadKeyboard setProperty:@"5" forKey:@"default"];
-		[phonePadKeyboard setProperty:@"phonePadKeyboard" forKey:@"key"];
+		PSSpecifier * phonePadKeyboard = [self createLinkListSpecifierNamed:@"Phone Pad keyboard" key:@"phonePadKeyboard" default:@"5"];
 		[phonePadKeyboard setValues:values titles:titles];
-		[phonePadKeyboard setProperty:kPackage forKey:@"defaults"];
-		[phonePadKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[phonePadKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:phonePadKeyboard];
 
-		PSTextFieldSpecifier *phonePadKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * phonePadKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"phonePadKeyboardTry" default:nil];
 		[phonePadKeyboardTry setKeyboardType:5 autoCaps:NO autoCorrection:NO];
 		[phonePadKeyboardTry setPlaceholder:@"Test Phone Pad keyboard"];
 		[_specifiers addObject:phonePadKeyboardTry];
 
-		PSSpecifier* namePhonePadKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard optimized for alphabetic entry."];
-		[namePhonePadKeyboardGroup setProperty:@"namePhonePadKeyboardGroup" forKey:@"key"];
+		PSSpecifier * namePhonePadKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard optimized for alphabetic entry." key:@"namePhonePadKeyboardGroup"];
 		[_specifiers addObject:namePhonePadKeyboardGroup];
 
-		PSSpecifier *namePhonePadKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Name Phone Pad keyboard"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[namePhonePadKeyboard setProperty:@"6" forKey:@"default"];
-		[namePhonePadKeyboard setProperty:@"namePhonePadKeyboard" forKey:@"key"];
+		PSSpecifier * namePhonePadKeyboard = [self createLinkListSpecifierNamed:@"Name Phone Pad keyboard" key:@"namePhonePadKeyboard" default:@"6"];
 		[namePhonePadKeyboard setValues:values titles:titles];
-		[namePhonePadKeyboard setProperty:kPackage forKey:@"defaults"];
-		[namePhonePadKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[namePhonePadKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:namePhonePadKeyboard];
 
-		PSTextFieldSpecifier *namePhonePadKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * namePhonePadKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"namePhonePadKeyboardTry" default:nil];
 		[namePhonePadKeyboardTry setKeyboardType:6 autoCaps:NO autoCorrection:NO];
 		[namePhonePadKeyboardTry setPlaceholder:@"Test Name Phone Pad keyboard"];
 		[_specifiers addObject:namePhonePadKeyboardTry];
 
-		PSSpecifier* emailAddressKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard optimized for entering email addresses. This keyboard type prominently features the at (“@”), period (“.”) and space characters."];
-		[emailAddressKeyboardGroup setProperty:@"emailAddressKeyboardGroup" forKey:@"key"];
+		PSSpecifier * emailAddressKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard optimized for entering email addresses. This keyboard type prominently features the at (“@”), period (“.”) and space characters." key:@"emailAddressKeyboardGroup"];
 		[_specifiers addObject:emailAddressKeyboardGroup];
 
-		PSSpecifier *emailAddressKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Email Address"
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:NSClassFromString(@"PSListItemsController")
-			cell:PSLinkListCell
-			edit:nil
-		];
-		[emailAddressKeyboard setProperty:@"7" forKey:@"default"];
-		[emailAddressKeyboard setProperty:@"emailAddressKeyboard" forKey:@"key"];
+		PSSpecifier * emailAddressKeyboard = [self createLinkListSpecifierNamed:@"Email Address" key:@"emailAddressKeyboard" default:@"7"];
 		[emailAddressKeyboard setValues:values titles:titles];
-		[emailAddressKeyboard setProperty:kPackage forKey:@"defaults"];
-		[emailAddressKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-		[emailAddressKeyboard setProperty:@"55" forKey:@"height"];
 		[_specifiers addObject:emailAddressKeyboard];
 
-		PSTextFieldSpecifier *emailAddressKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-			target:self
-			set:@selector(setPreferenceValue:specifier:)
-			get:@selector(readPreferenceValue:)
-			detail:nil
-			cell:PSEditTextCell
-			edit:nil
-		];
+		PSTextFieldSpecifier * emailAddressKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"emailAddressKeyboardTry" default:nil];
 		[emailAddressKeyboardTry setKeyboardType:7 autoCaps:NO autoCorrection:NO];
 		[emailAddressKeyboardTry setPlaceholder:@"Test Email Address keyboard"];
 		[_specifiers addObject:emailAddressKeyboardTry];
 
-//		if ( kIsiOS4_1AndUp ) {
-			PSSpecifier* decimalPadKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard with numbers and a decimal point."];
-			[decimalPadKeyboardGroup setProperty:@"decimalPadKeyboardGroup" forKey:@"key"];
+//		if (@available(iOS 4.1, *)) {
+			PSSpecifier * decimalPadKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard with numbers and a decimal point." key:@"decimalPadKeyboardGroup"];
 			[_specifiers addObject:decimalPadKeyboardGroup];
 
-			PSSpecifier *decimalPadKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Decimal Pad keyboard"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:NSClassFromString(@"PSListItemsController")
-				cell:PSLinkListCell
-				edit:nil
-			];
-			[decimalPadKeyboard setProperty:@"8" forKey:@"default"];
-			[decimalPadKeyboard setProperty:@"decimalPadKeyboard" forKey:@"key"];
+			PSSpecifier * decimalPadKeyboard = [self createLinkListSpecifierNamed:@"Decimal Pad keyboard" key:@"decimalPadKeyboard" default:@"8"];
 			[decimalPadKeyboard setValues:values titles:titles];
-			[decimalPadKeyboard setProperty:kPackage forKey:@"defaults"];
-			[decimalPadKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[decimalPadKeyboard setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:decimalPadKeyboard];
 
-			PSTextFieldSpecifier *decimalPadKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSEditTextCell
-				edit:nil
-			];
+			PSTextFieldSpecifier * decimalPadKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"decimalPadKeyboardTry" default:nil];
 			[decimalPadKeyboardTry setKeyboardType:8 autoCaps:NO autoCorrection:NO];
 			[decimalPadKeyboardTry setPlaceholder:@"Test Decimal Pad keyboard"];
 			[_specifiers addObject:decimalPadKeyboardTry];
 //		}
 
-//		if ( kIsiOS5AndUp ) {
-			PSSpecifier* twitterKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard optimized for Twitter text entry, with easy access to the at (“@”) and hash (“#”) characters."];
-			[twitterKeyboardGroup setProperty:@"twitterKeyboardGroup" forKey:@"key"];
+//		if (@available(iOS 5, *)) {
+			PSSpecifier * twitterKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard optimized for Twitter text entry, with easy access to the at (“@”) and hash (“#”) characters." key:@"twitterKeyboardGroup"];
 			[_specifiers addObject:twitterKeyboardGroup];
 
-			PSSpecifier *twitterKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Twitter keyboard"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:NSClassFromString(@"PSListItemsController")
-				cell:PSLinkListCell
-				edit:nil
-			];
-			[twitterKeyboard setProperty:@"9" forKey:@"default"];
-			[twitterKeyboard setProperty:@"twitterKeyboard" forKey:@"key"];
+			PSSpecifier * twitterKeyboard = [self createLinkListSpecifierNamed:@"Twitter keyboard" key:@"twitterKeyboard" default:@"9"];
 			[twitterKeyboard setValues:values titles:titles];
-			[twitterKeyboard setProperty:kPackage forKey:@"defaults"];
-			[twitterKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[twitterKeyboard setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:twitterKeyboard];
 
-			PSTextFieldSpecifier *twitterKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSEditTextCell
-				edit:nil
-			];
+			PSTextFieldSpecifier * twitterKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"twitterKeyboardTry" default:nil];
 			[twitterKeyboardTry setKeyboardType:9 autoCaps:NO autoCorrection:NO];
 			[twitterKeyboardTry setPlaceholder:@"Test Twitter keyboard"];
 			[_specifiers addObject:twitterKeyboardTry];
 //		}
 
-//		if ( kIsiOS7AndUp ) {
-			PSSpecifier* webSearchKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a keyboard optimized for web search terms and URL entry. This keyboard type prominently features the space and period (“.”) characters."];
-			[webSearchKeyboardGroup setProperty:@"webSearchKeyboardGroup" forKey:@"key"];
+//		if (@available(iOS 7, *)) {
+			PSSpecifier * webSearchKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a keyboard optimized for web search terms and URL entry. This keyboard type prominently features the space and period (“.”) characters." key:@"webSearchKeyboardGroup"];
 			[_specifiers addObject:webSearchKeyboardGroup];
 
-			PSSpecifier *webSearchKeyboard = [PSSpecifier preferenceSpecifierNamed:@"Web Search keyboard"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:NSClassFromString(@"PSListItemsController")
-				cell:PSLinkListCell
-				edit:nil
-			];
-			[webSearchKeyboard setProperty:@"10" forKey:@"default"];
-			[webSearchKeyboard setProperty:@"webSearchKeyboard" forKey:@"key"];
+			PSSpecifier * webSearchKeyboard = [self createLinkListSpecifierNamed:@"Web Search keyboard" key:@"webSearchKeyboard" default:@"10"];
 			[webSearchKeyboard setValues:values titles:titles];
-			[webSearchKeyboard setProperty:kPackage forKey:@"defaults"];
-			[webSearchKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[webSearchKeyboard setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:webSearchKeyboard];
 
-			PSTextFieldSpecifier *webSearchKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSEditTextCell
-				edit:nil
-			];
+			PSTextFieldSpecifier * webSearchKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"webSearchKeyboardTry" default:nil];
 			[webSearchKeyboardTry setKeyboardType:10 autoCaps:NO autoCorrection:NO];
 			[webSearchKeyboardTry setPlaceholder:@"Test Web Search keyboard"];
 			[_specifiers addObject:webSearchKeyboardTry];
 //		}
 
-		if ( kIsiOS10AndUp ) {
-			PSSpecifier* asciiCapableNumberPadKeyboardGroup = [PSSpecifier groupSpecifierWithHeader:@"" footer:@"Specifies a number pad that outputs only ASCII digits."];
-			[asciiCapableNumberPadKeyboardGroup setProperty:@"asciiCapableNumberPadKeyboardGroup" forKey:@"key"];
+		if (@available(iOS 10, *)) {
+			PSSpecifier * asciiCapableNumberPadKeyboardGroup = [self createGroupSpecifierNamed:@"" footer:@"Specifies a number pad that outputs only ASCII digits." key:@"asciiCapableNumberPadKeyboardGroup"];
 			[_specifiers addObject:asciiCapableNumberPadKeyboardGroup];
 
-			PSSpecifier *asciiCapableNumberPadKeyboard = [PSSpecifier preferenceSpecifierNamed:@"ASCII Capable Number Pad keyboard"
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:NSClassFromString(@"PSListItemsController")
-				cell:PSLinkListCell
-				edit:nil
-			];
-			[asciiCapableNumberPadKeyboard setProperty:@"11" forKey:@"default"];
-			[asciiCapableNumberPadKeyboard setProperty:@"asciiCapableNumberPadKeyboard" forKey:@"key"];
+			PSSpecifier * asciiCapableNumberPadKeyboard = [self createLinkListSpecifierNamed:@"ASCII Capable Number Pad keyboard" key:@"asciiCapableNumberPadKeyboard" default:@"11"];
 			[asciiCapableNumberPadKeyboard setValues:values titles:titles];
-			[asciiCapableNumberPadKeyboard setProperty:kPackage forKey:@"defaults"];
-			[asciiCapableNumberPadKeyboard setProperty:kSettingsChanged forKey:@"PostNotification"];
-			[asciiCapableNumberPadKeyboard setProperty:@"55" forKey:@"height"];
 			[_specifiers addObject:asciiCapableNumberPadKeyboard];
 
-			PSTextFieldSpecifier *asciiCapableNumberPadKeyboardTry = [PSTextFieldSpecifier preferenceSpecifierNamed:@""
-				target:self
-				set:@selector(setPreferenceValue:specifier:)
-				get:@selector(readPreferenceValue:)
-				detail:nil
-				cell:PSEditTextCell
-				edit:nil
-			];
+			PSTextFieldSpecifier * asciiCapableNumberPadKeyboardTry = [self createEditTextSpecifierNamed:@"" key:@"asciiCapableNumberPadKeyboardTry" default:nil];
 			[asciiCapableNumberPadKeyboardTry setKeyboardType:11 autoCaps:NO autoCorrection:NO];
 			[asciiCapableNumberPadKeyboardTry setPlaceholder:@"Test ASCII Capable Number Pad keyboard"];
 			[_specifiers addObject:asciiCapableNumberPadKeyboardTry];
