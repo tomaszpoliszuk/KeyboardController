@@ -15,22 +15,19 @@
  */
 
 
-#include "headers.h"
-
-#define userSettingsFile @"/var/mobile/Library/Preferences/com.tomaszpoliszuk.keyboardcontroller.plist"
-#define packageName "com.tomaszpoliszuk.keyboardcontroller"
+#include "../headers.h"
 
 NSMutableDictionary * tweakSettings;
 
 @implementation KeyboardControllerMainSettings
--(PSSpecifier *)createGroupSpecifierNamed:(NSString *)name footer:(NSString *)footer key:(NSString *)key {
+- (PSSpecifier *)createGroupSpecifierNamed:(NSString *)name footer:(NSString *)footer key:(NSString *)key {
 	PSSpecifier * specifier = [PSSpecifier groupSpecifierWithHeader:name footer:footer];
 	[specifier setProperty:name forKey:@"label"];
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	return specifier;
 }
--(PSSpecifier *)createSwitchSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+- (PSSpecifier *)createSwitchSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
 	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -43,11 +40,11 @@ NSMutableDictionary * tweakSettings;
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	return specifier;
 }
--(PSSpecifier *)createSegmentSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+- (PSSpecifier *)createSegmentSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
 	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -60,12 +57,12 @@ NSMutableDictionary * tweakSettings;
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	[specifier setProperty:@"55" forKey:@"height"];
 	return specifier;
 }
--(PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue detail:(NSString *)detail {
+- (PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue detail:(NSString *)detail {
 	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -78,11 +75,11 @@ NSMutableDictionary * tweakSettings;
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	return specifier;
 }
--(PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+- (PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
 	PSTextFieldSpecifier * specifier = [PSTextFieldSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -95,11 +92,11 @@ NSMutableDictionary * tweakSettings;
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	return specifier;
 }
--(PSSpecifier *)createButtonSpecifierNamed:(NSString *)name {
+- (PSSpecifier *)createButtonSpecifierNamed:(NSString *)name {
 	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:nil
@@ -126,6 +123,15 @@ NSMutableDictionary * tweakSettings;
 		[uiStyle setValues:@[ @"999", @"2", @"1" ] titles:@[ @"Default", @"Light", @"Dark" ]];
 		[_specifiers addObject:uiStyle];
 
+		PSSpecifier * selectTypesGroup = [self createGroupSpecifierNamed:@"Select Types" footer:nil key:@"selectTypesGroup"];
+		[_specifiers addObject:selectTypesGroup];
+
+		PSSpecifier * selectKeyboardType = [self createLinkListSpecifierNamed:@"Keyboard Type" key:@"selectKeyboardType" default:nil detail:@"KeyboardControllerKeyboardTypeSettings"];
+		[_specifiers addObject:selectKeyboardType];
+
+		PSSpecifier * selectTypesReturnKey = [self createLinkListSpecifierNamed:@"Return Key Type" key:@"selectTypesReturnKey" default:nil detail:@"KeyboardControllerReturnKeyTypeSettings"];
+		[_specifiers addObject:selectTypesReturnKey];
+
 		PSSpecifier * keyboardDismissModeGroup = [self createGroupSpecifierNamed:@"Swipe to dismiss keyboard" footer:@"Disabled:\nThe keyboard does not get dismissed with a drag.\n\nImmediately:\nThe keyboard is dismissed when a drag begins.\n\nInteractive:\nThe keyboard follows the dragging touch offscreen, and can be pulled upward again to cancel the dismiss." key:@"keyboardDismissModeGroup"];
 		[_specifiers addObject:keyboardDismissModeGroup];
 
@@ -150,42 +156,44 @@ NSMutableDictionary * tweakSettings;
 			[_specifiers addObject:trackpadMode];
 		}
 
-		if (@available(iOS 13, *)) {
-			if ( [[UIDevice currentDevice] respondsToSelector:@selector(_tapticEngine)] ) {
-				if ( [UIDevice currentDevice]._tapticEngine ) {
-					PSSpecifier * feedbackGroup = [self createGroupSpecifierNamed:@"Haptic Feedback" footer:nil key:@"feedbackGroup"];
-					[_specifiers addObject:feedbackGroup];
+		if (@available(iOS 10, *)) {
+			PSSpecifier * dictationButtonGroup = [self createGroupSpecifierNamed:@"Dictation Button" footer:nil key:@"dictationButtonGroup"];
+			[_specifiers addObject:dictationButtonGroup];
 
-					NSArray * feedbackTypeTitles = @[ @"Disabled", @"selection", @"Light", @"Medium", @"Heavy", @"Soft", @"Rigid" ];
-					NSArray * feedbackTypeValues = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6" ];
-
-					NSArray * feedbackWhenTitles = @[ @"start", @"end" ];
-					NSArray * feedbackWhenValues = @[ @"0", @"1" ];
-
-					PSSpecifier * feedbackType = [self createLinkListSpecifierNamed:@"Haptic type:" key:@"feedbackType" default:@"0" detail:@"PSListItemsController"];
-					[feedbackType setValues:feedbackTypeValues titles:feedbackTypeTitles];
-					[_specifiers addObject:feedbackType];
-
-					PSSpecifier * feedbackWhen = [self createLinkListSpecifierNamed:@"Select feedback type:" key:@"feedbackWhen" default:@"0" detail:@"PSListItemsController"];
-					[feedbackWhen setValues:feedbackWhenValues titles:feedbackWhenTitles];
-					[_specifiers addObject:feedbackWhen];
-				}
-			}
+			PSSpecifier * dictationButton = [self createSegmentSpecifierNamed:@"dictationButton" key:@"dictationButton" default:@"999"];
+			[dictationButton setValues:@[ @"999", @"0" ] titles:@[ @"Default", @"Disable" ]];
+			[_specifiers addObject:dictationButton];
 		}
 
-		PSSpecifier * selectTypesGroup = [self createGroupSpecifierNamed:@"Select Types" footer:nil key:@"selectTypesGroup"];
-		[_specifiers addObject:selectTypesGroup];
+		if (@available(iOS 11, *)) {
+			PSSpecifier * shouldShowInternationalKeyGroup = [self createGroupSpecifierNamed:@"Globe Button" footer:nil key:@"shouldShowInternationalKeyGroup"];
+			[_specifiers addObject:shouldShowInternationalKeyGroup];
 
-		PSSpecifier * selectKeyboardType = [self createLinkListSpecifierNamed:@"Edit Keyboard Type" key:@"selectKeyboardType" default:nil detail:@"KeyboardControllerKeyboardTypeSettings"];
-		[_specifiers addObject:selectKeyboardType];
+			PSSpecifier * shouldShowInternationalKey = [self createSegmentSpecifierNamed:@"shouldShowInternationalKey" key:@"shouldShowInternationalKey" default:@"999"];
+			[shouldShowInternationalKey setValues:@[ @"999", @"0" ] titles:@[ @"Default", @"Disable" ]];
+			[_specifiers addObject:shouldShowInternationalKey];
+		}
 
-		PSSpecifier * selectTypesReturnKey = [self createLinkListSpecifierNamed:@"Edit Return Key Type" key:@"selectTypesReturnKey" default:nil detail:@"KeyboardControllerReturnKeyTypeSettings"];
-		[_specifiers addObject:selectTypesReturnKey];
+//		if (@available(iOS 8, *)) {
+			PSSpecifier * returnKeyStylingGroup = [self createGroupSpecifierNamed:@"Return Key Styling" footer:nil key:@"returnKeyStylingGroup"];
+			[_specifiers addObject:returnKeyStylingGroup];
 
-		PSSpecifier * keyboardOptions = [self createLinkListSpecifierNamed:@"Other Options" key:@"keyboardOptions" default:nil detail:@"KeyboardControllerKeyboardOptions"];
-		[_specifiers addObject:keyboardOptions];
+			PSSpecifier * returnKeyStyling = [self createSegmentSpecifierNamed:@"returnKeyStyling" key:@"returnKeyStyling" default:@"999"];
+			[returnKeyStyling setValues:@[ @"999", @"0", @"1" ] titles:@[ @"Default", @"Disable", @"Enable" ]];
+			[_specifiers addObject:returnKeyStyling];
+//		}
+
+		PSSpecifier * selectingSkinToneForEmojiGroup = [self createGroupSpecifierNamed:@"Selecting skin tone for emoji" footer:nil key:@"selectingSkinToneForEmojiGroup"];
+		[_specifiers addObject:selectingSkinToneForEmojiGroup];
+
+		PSSpecifier * selectingSkinToneForEmoji = [self createSegmentSpecifierNamed:@"selectingSkinToneForEmoji" key:@"selectingSkinToneForEmoji" default:@"999"];
+		[selectingSkinToneForEmoji setValues:@[ @"999", @"1" ] titles:@[ @"Default", @"Disable" ]];
+		[_specifiers addObject:selectingSkinToneForEmoji];
 
 		if ( [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad ) {
+			PSSpecifier * emptyGroup = [PSSpecifier emptyGroupSpecifier];
+			[_specifiers addObject:emptyGroup];
+
 			PSSpecifier * betaOptions = [self createLinkListSpecifierNamed:@"Beta Options" key:@"betaOptions" default:nil detail:@"KeyboardControllerBetaOptions"];
 			[_specifiers addObject:betaOptions];
 		}
@@ -282,7 +290,7 @@ NSMutableDictionary * tweakSettings;
 	}
 }
 - (void)resetSettings {
-	NSUserDefaults * tweakSettings = [[NSUserDefaults alloc] initWithSuiteName:domainString];
+	NSUserDefaults * tweakSettings = [[NSUserDefaults alloc] initWithSuiteName:@kPackageName];
 	UIAlertController * resetSettingsAlert = [UIAlertController alertControllerWithTitle:@"Reset Keyboard Controller Settings" message:@"Do you want to reset settings?" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction * confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 		for(NSString * key in [[tweakSettings dictionaryRepresentation] allKeys]) {

@@ -2,25 +2,24 @@
 Control your Keyboard
 
 ## Compatibility
-iOS 10 and above
+iOS 8 and above
 
-## What you can do with this tweak:
-* Select UI Style (Default, Light, Dark)
-* Edit Keyboard Type:
+## Features:
+* UI Style (Default, Light, Dark)
+* Keyboard Type:
 	- Default
+	- ASCII Capable
 	- Numbers and Punctuation
 	- URL
-	- Email Address
-	- ASCII Capable
-	- Web Search
-	- Alphabet
-	- Name Phone Pad
-	- Twitter
 	- Number Pad
-	- Decimal Pad
 	- Phone Pad
-	- ASCII Capable Number Pad
-* Edit Return Key Type:
+	- Name Phone Pad
+	- Email Address
+	- Decimal Pad
+	- Twitter
+	- Web Search
+	- ASCII Capable Number Pad (iOS 10+)
+* Return Key Type:
 	- Default
 	- Go
 	- Google
@@ -32,15 +31,15 @@ iOS 10 and above
 	- Yahoo
 	- Done
 	- Emergency Call
-	- Continue
+	- Continue (iOS 9+)
 * Swipe to dismiss keyboard (Default, Disabled, Immediately, Interactive)
-* Trackpad mode (Default, Disabled, Spacebar only, Enabled)
+* Trackpad mode (Default, Disabled, Spacebar only, Enabled) (iOS 12+)
+* Dictation Button (Default, Disable) (iOS 10+)
+* Globe Button (Default, Disable) (iOS 11+)
 * Return key styling (Default, Disable, Enable)
-* Dictation Button (Default, Disable)
-* Globe Button (Default, Disable)
 * Selecting skin tone for emoji (Default, Disable)
-* Experimental features (Buggy features that someone might find useful):
-	- One-Handed Keyboard (Default, Force Left, Force Right)
+* Beta Options:
+	- One-Handed Keyboard (Default, Force Left, Force Right) (iOS 11+)
 	- Blue Theming of Keyboard (Default, Disable, Enable)
 
 **Configure options from Settings.**

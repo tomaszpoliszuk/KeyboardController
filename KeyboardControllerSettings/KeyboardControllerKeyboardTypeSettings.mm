@@ -15,17 +15,17 @@
  */
 
 
-#include "headers.h"
+#include "../headers.h"
 
 @implementation KeyboardControllerKeyboardTypeSettings
--(PSSpecifier *)createGroupSpecifierNamed:(NSString *)name footer:(NSString *)footer key:(NSString *)key {
+- (PSSpecifier *)createGroupSpecifierNamed:(NSString *)name footer:(NSString *)footer key:(NSString *)key {
 	PSSpecifier * specifier = [PSSpecifier groupSpecifierWithHeader:name footer:footer];
 	[specifier setProperty:name forKey:@"label"];
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	return specifier;
 }
--(PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+- (PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
 	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -38,11 +38,11 @@
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	return specifier;
 }
--(PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+- (PSTextFieldSpecifier *)createEditTextSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
 	PSTextFieldSpecifier * specifier = [PSTextFieldSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -55,7 +55,7 @@
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	return specifier;
 }

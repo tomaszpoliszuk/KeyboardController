@@ -15,10 +15,10 @@
  */
 
 
-#include "headers.h"
+#include "../headers.h"
 
 @implementation KeyboardControllerReturnKeyTypeSettings
--(PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
+- (PSSpecifier *)createLinkListSpecifierNamed:(NSString *)name key:(NSString *)key default:(NSString *)defaultValue {
 	PSSpecifier * specifier = [PSSpecifier preferenceSpecifierNamed:name
 		target:self
 		set:@selector(setPreferenceValue:specifier:)
@@ -31,7 +31,7 @@
 	[specifier setProperty:key forKey:@"key"];
 	[specifier setProperty:key forKey:@"id"];
 	[specifier setProperty:defaultValue forKey:@"default"];
-	[specifier setProperty:kPackage forKey:@"defaults"];
+	[specifier setProperty:@kPackageName forKey:@"defaults"];
 	[specifier setProperty:kSettingsChanged forKey:@"PostNotification"];
 	return specifier;
 }

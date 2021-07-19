@@ -17,14 +17,18 @@
 
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
+//	#import <AudioToolbox/AudioToolbox.h>
 
-NSString *const domainString = @"com.tomaszpoliszuk.keyboardcontroller";
-
-#define kPackage @"com.tomaszpoliszuk.keyboardcontroller"
+#define kPackageName "com.tomaszpoliszuk.keyboardcontroller"
 #define kSettingsChanged @"com.tomaszpoliszuk.keyboardcontroller.settingschanged"
+#define kUserSettingsFile @"/var/mobile/Library/Preferences/com.tomaszpoliszuk.keyboardcontroller.plist"
 
+@interface UIView (KeyboardController)
+-(id)_viewControllerForAncestor;
+@end
 
 @interface UIDevice (KeyboardController)
+@property (getter=_feedbackSupportLevel, nonatomic, readonly) long long feedbackSupportLevel;
 + (id)currentDevice;
 - (bool)_supportsForceTouch;
 - (id)_tapticEngine;

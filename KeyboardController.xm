@@ -15,14 +15,9 @@
  */
 
 
-#define userSettingsFile @"/var/mobile/Library/Preferences/com.tomaszpoliszuk.keyboardcontroller.plist"
-#define packageName "com.tomaszpoliszuk.keyboardcontroller"
+#include "headers.h"
 
-@interface UIView (KeyboardController)
--(id)_viewControllerForAncestor;
-@end
-
-NSMutableDictionary *tweakSettings;
+NSMutableDictionary * tweakSettings;
 
 static bool enableTweak;
 
@@ -75,12 +70,12 @@ static int feedbackType;
 static int feedbackWhen;
 
 static void SettingsChanged() {
-	CFArrayRef keyList = CFPreferencesCopyKeyList(CFSTR(packageName), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+	CFArrayRef keyList = CFPreferencesCopyKeyList(CFSTR(kPackageName), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if(keyList) {
 		tweakSettings = (NSMutableDictionary *)CFBridgingRelease(
 			CFPreferencesCopyMultiple(
 				keyList,
-				CFSTR(packageName),
+				CFSTR(kPackageName),
 				kCFPreferencesCurrentUser,
 				kCFPreferencesAnyHost
 			)
@@ -90,7 +85,7 @@ static void SettingsChanged() {
 		tweakSettings = nil;
 	}
 	if (!tweakSettings) {
-		tweakSettings = [NSMutableDictionary dictionaryWithContentsOfFile:userSettingsFile];
+		tweakSettings = [NSMutableDictionary dictionaryWithContentsOfFile:kUserSettingsFile];
 	}
 
 	enableTweak = [([tweakSettings objectForKey:@"enableTweak"] ?: @(YES)) boolValue];
@@ -164,60 +159,60 @@ static void receivedNotification(
 }
 - (long long)keyboardType {
 	long long origValue = %orig;
-	if ( origValue == 0 && enableTweak ) {
+	if ( enableTweak && origValue == 0 ) {
 		return defaultKeyboard;
-	} else if ( origValue == 1 && enableTweak ) {
+	} else if ( enableTweak && origValue == 1 ) {
 		return asciiCapableKeyboard;
-	} else if ( origValue == 2 && enableTweak ) {
+	} else if ( enableTweak && origValue == 2 ) {
 		return numbersAndPunctuationKeyboard;
-	} else if ( origValue == 3 && enableTweak ) {
+	} else if ( enableTweak && origValue == 3 ) {
 		return urlKeyboard;
-	} else if ( origValue == 4 && enableTweak ) {
+	} else if ( enableTweak && origValue == 4 ) {
 		return numberPadKeyboard;
-	} else if ( origValue == 5 && enableTweak ) {
+	} else if ( enableTweak && origValue == 5 ) {
 		return phonePadKeyboard;
-	} else if ( origValue == 6 && enableTweak ) {
+	} else if ( enableTweak && origValue == 6 ) {
 		return namePhonePadKeyboard;
-	} else if ( origValue == 7 && enableTweak ) {
+	} else if ( enableTweak && origValue == 7 ) {
 		return emailAddressKeyboard;
-	} else if ( origValue == 8 && enableTweak ) {
+	} else if ( enableTweak && origValue == 8 ) {
 		return decimalPadKeyboard;
-	} else if ( origValue == 9 && enableTweak ) {
+	} else if ( enableTweak && origValue == 9 ) {
 		return twitterKeyboard;
-	} else if ( origValue == 10 && enableTweak ) {
+	} else if ( enableTweak && origValue == 10 ) {
 		return webSearchKeyboard;
-	} else if ( origValue == 11 && enableTweak ) {
+	} else if ( enableTweak && origValue == 11 ) {
 		return asciiCapableNumberPadKeyboard;
 	}
 	return origValue;
 }
-- (void)setKeyboardType:(long long)arg1 {
-	if ( arg1 == 0 && enableTweak ) {
-		arg1 = defaultKeyboard;
-	} else if ( arg1 == 1 && enableTweak ) {
-		arg1 = asciiCapableKeyboard;
-	} else if ( arg1 == 2 && enableTweak ) {
-		arg1 = numbersAndPunctuationKeyboard;
-	} else if ( arg1 == 3 && enableTweak ) {
-		arg1 = urlKeyboard;
-	} else if ( arg1 == 4 && enableTweak ) {
-		arg1 = numberPadKeyboard;
-	} else if ( arg1 == 5 && enableTweak ) {
-		arg1 = phonePadKeyboard;
-	} else if ( arg1 == 6 && enableTweak ) {
-		arg1 = namePhonePadKeyboard;
-	} else if ( arg1 == 7 && enableTweak ) {
-		arg1 = emailAddressKeyboard;
-	} else if ( arg1 == 8 && enableTweak ) {
-		arg1 = decimalPadKeyboard;
-	} else if ( arg1 == 9 && enableTweak ) {
-		arg1 = twitterKeyboard;
-	} else if ( arg1 == 10 && enableTweak ) {
-		arg1 = webSearchKeyboard;
-	} else if ( arg1 == 11 && enableTweak ) {
-		arg1 = asciiCapableNumberPadKeyboard;
+- (void)setKeyboardType:(long long)keyboardType {
+	if ( enableTweak && keyboardType == 0 ) {
+		keyboardType = defaultKeyboard;
+	} else if ( enableTweak && keyboardType == 1 ) {
+		keyboardType = asciiCapableKeyboard;
+	} else if ( enableTweak && keyboardType == 2 ) {
+		keyboardType = numbersAndPunctuationKeyboard;
+	} else if ( enableTweak && keyboardType == 3 ) {
+		keyboardType = urlKeyboard;
+	} else if ( enableTweak && keyboardType == 4 ) {
+		keyboardType = numberPadKeyboard;
+	} else if ( enableTweak && keyboardType == 5 ) {
+		keyboardType = phonePadKeyboard;
+	} else if ( enableTweak && keyboardType == 6 ) {
+		keyboardType = namePhonePadKeyboard;
+	} else if ( enableTweak && keyboardType == 7 ) {
+		keyboardType = emailAddressKeyboard;
+	} else if ( enableTweak && keyboardType == 8 ) {
+		keyboardType = decimalPadKeyboard;
+	} else if ( enableTweak && keyboardType == 9 ) {
+		keyboardType = twitterKeyboard;
+	} else if ( enableTweak && keyboardType == 10 ) {
+		keyboardType = webSearchKeyboard;
+	} else if ( enableTweak && keyboardType == 11 ) {
+		keyboardType = asciiCapableNumberPadKeyboard;
 	}
-	%orig(arg1);
+	%orig(keyboardType);
 }
 - (long long)returnKeyType {
 	long long origValue = %orig;
@@ -308,6 +303,22 @@ static void receivedNotification(
 	}
 	return origValue;
 }
+//		- (void)playKeyClickSoundForKey:(id)arg1 {
+//			%orig;
+//			NSLog(@"[KeyboardController] UIKeyboardLayoutStar playKeyClickSoundForKey arg1 = %@", arg1);
+//		}
+//		- (void)playKeyClickSoundOnDownForKey:(id)arg1 {
+//			%orig;
+//			NSLog(@"[KeyboardController] UIKeyboardLayoutStar playKeyClickSoundOnDownForKey arg1 = %@", arg1);
+//		}
+//		- (void)playKeyClickSoundOnUpForKey:(id)arg1 {
+//			%orig;
+//			NSLog(@"[KeyboardController] UIKeyboardLayoutStar playKeyClickSoundOnUpForKey arg1 = %@", arg1);
+//		}
+//		- (void)playKeyReleaseSoundForKey:(id)arg1 {
+//			%orig;
+//			NSLog(@"[KeyboardController] UIKeyboardLayoutStar playKeyReleaseSoundForKey arg1 = %@", arg1);
+//		}
 %end
 
 %hook UIKeyboardSplitTransitionView
@@ -424,7 +435,7 @@ static void receivedNotification(
 %group iOS12
 
 %hook _UIKeyboardTextSelectionInteraction
-- (int)forceTouchGestureRecognizerShouldBegin:(id)arg1 {
+- (bool)forceTouchGestureRecognizerShouldBegin:(id)arg1 {
 	int origValue = %orig;
 	if ( enableTweak && trackpadMode == 404 ) {
 		return NO;
@@ -435,7 +446,7 @@ static void receivedNotification(
 	}
 	return origValue;
 }
-- (int)gestureRecognizerShouldBegin:(id)arg1 {
+- (bool)gestureRecognizerShouldBegin:(id)arg1 {
 	int origValue = %orig;
 	if ( enableTweak && trackpadMode == 404 ) {
 		return NO;
@@ -450,74 +461,78 @@ static void receivedNotification(
 
 %end
 
-
-%hook UIKeyboardLayout
-
--(void)touchDown:(id)arg1 {
-	%orig;
-	if (@available(iOS 13, *)) {
-		if ( ![[NSProcessInfo processInfo] isLowPowerModeEnabled] ) {
-			if ( ( feedbackType == 0 && feedbackWhen == 1 ) || feedbackType == 0 ) {
-				return;
-			} else if ( feedbackType == 1 && feedbackWhen == 0 ) {
-				UISelectionFeedbackGenerator *generator = [[UISelectionFeedbackGenerator alloc] init];
-				[generator prepare];
-				[generator selectionChanged];
-				generator = nil;
-			} else if ( feedbackWhen == 0 ) {
-				int feedbackTypeName;
-				if ( feedbackType == 2 ) {
-					feedbackTypeName = UIImpactFeedbackStyleLight;
-				} else if ( feedbackType == 3 ) {
-					feedbackTypeName = UIImpactFeedbackStyleMedium;
-				} else if ( feedbackType == 4 ) {
-					feedbackTypeName = UIImpactFeedbackStyleHeavy;
-				} else if ( feedbackType == 5 ) {
-					feedbackTypeName = UIImpactFeedbackStyleSoft;
-				} else {
-					feedbackTypeName = UIImpactFeedbackStyleRigid;
-				}
-				UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]initWithStyle:feedbackTypeName];
-				[generator prepare];
-				[generator impactOccurred];
-				generator = nil;
-			}
-		}
-	}
-}
--(void)touchUp:(id)arg1 {
-	%orig;
-	if (@available(iOS 13, *)) {
-		if ( ![[NSProcessInfo processInfo] isLowPowerModeEnabled] ) {
-			if ( ( feedbackType == 0 && feedbackWhen == 0 ) || feedbackType == 0 ) {
-				return;
-			} else if ( feedbackType == 1 && feedbackWhen == 1 ) {
-				UISelectionFeedbackGenerator *generator = [[UISelectionFeedbackGenerator alloc] init];
-				[generator prepare];
-				[generator selectionChanged];
-				generator = nil;
-			} else if ( feedbackWhen == 1 ) {
-				int feedbackTypeName;
-				if (feedbackType == 2) {
-					feedbackTypeName = UIImpactFeedbackStyleLight;
-				} else if ( feedbackType == 3 ) {
-					feedbackTypeName = UIImpactFeedbackStyleMedium;
-				} else if ( feedbackType == 4 ) {
-					feedbackTypeName = UIImpactFeedbackStyleHeavy;
-				} else if ( feedbackType == 5 ) {
-					feedbackTypeName = UIImpactFeedbackStyleSoft;
-				} else {
-					feedbackTypeName = UIImpactFeedbackStyleRigid;
-				}
-				UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]initWithStyle:feedbackTypeName];
-				[generator prepare];
-				[generator impactOccurred];
-				generator = nil;
-			}
-		}
-	}
-}
-%end
+//	%hook UIKeyboardLayout
+//	- (void)touchDown:(id)arg1 {
+//		%orig;
+//	NSLog(@"[KeyboardController] UIKeyboardLayout touchDown arg1 = %@", arg1);
+//		if (@available(iOS 13, *)) {
+//			if ( ![[NSProcessInfo processInfo] isLowPowerModeEnabled] ) {
+//				int feedbackTypeName = 0;
+//				if ( feedbackWhen == 1 || feedbackType == 0 ) {
+//					return;
+//				} else if ( feedbackType == 1 ) {
+//					UISelectionFeedbackGenerator *generator = [[UISelectionFeedbackGenerator alloc] init];
+//					[generator prepare];
+//					[generator selectionChanged];
+//					generator = nil;
+//				} else if ( feedbackType == 2 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleLight;
+//				} else if ( feedbackType == 3 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleMedium;
+//				} else if ( feedbackType == 4 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleHeavy;
+//				} else if ( feedbackType == 5 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleSoft;
+//				} else if ( feedbackType == 6 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleRigid;
+//				} else if ( feedbackType > 505 ) {
+//					AudioServicesPlaySystemSound(feedbackType);
+//				}
+//				if ( feedbackTypeName > 0 ) {
+//					UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]initWithStyle:feedbackTypeName];
+//					[generator prepare];
+//					[generator impactOccurred];
+//					generator = nil;
+//				}
+//			}
+//		}
+//	}
+//	- (void)touchUp:(id)arg1 {
+//		%orig;
+//		NSLog(@"[KeyboardController] UIKeyboardLayout touchUp arg1 = %@", arg1);
+//		if (@available(iOS 13, *)) {
+//			if ( ![[NSProcessInfo processInfo] isLowPowerModeEnabled] ) {
+//				int feedbackTypeName = 0;
+//				if ( feedbackWhen == 0 || feedbackType == 0 ) {
+//					return;
+//				} else if ( feedbackType == 1 && feedbackWhen == 1 ) {
+//					UISelectionFeedbackGenerator *generator = [[UISelectionFeedbackGenerator alloc] init];
+//					[generator prepare];
+//					[generator selectionChanged];
+//					generator = nil;
+//				} else if (feedbackType == 2) {
+//					feedbackTypeName = UIImpactFeedbackStyleLight;
+//				} else if ( feedbackType == 3 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleMedium;
+//				} else if ( feedbackType == 4 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleHeavy;
+//				} else if ( feedbackType == 5 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleSoft;
+//				} else if ( feedbackType == 6 ) {
+//					feedbackTypeName = UIImpactFeedbackStyleRigid;
+//				} else if ( feedbackType > 505 ) {
+//					AudioServicesPlaySystemSound(feedbackType);
+//				}
+//				if ( feedbackTypeName > 0 ) {
+//					UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc]initWithStyle:feedbackTypeName];
+//					[generator prepare];
+//					[generator impactOccurred];
+//					generator = nil;
+//				}
+//			}
+//		}
+//	}
+//	%end
 
 %ctor {
 	if ( [ [ [ [NSProcessInfo processInfo] arguments] objectAtIndex:0] containsString:@"SpringBoard.app" ]
