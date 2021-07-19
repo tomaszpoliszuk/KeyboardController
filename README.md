@@ -49,3 +49,4 @@ iOS 8 and above
 ![settings](screenshots/keyboardcontroller1.png)
 ![settings](screenshots/keyboardcontroller2.png)
 ![settings](screenshots/keyboardcontroller3.png)
+![settings](screenshots/keyboardcontroller4.png)
