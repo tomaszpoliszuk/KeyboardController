@@ -253,6 +253,8 @@ static void receivedNotification(
 			![[self _viewControllerForAncestor] isKindOfClass:%c(UICompatibilityInputViewController)]
 			&&
 			![[self _viewControllerForAncestor] isKindOfClass:%c(UICandidateViewController)]
+			&&
+			![[self _viewControllerForAncestor] isKindOfClass:%c(UIInputViewController)]
 		) {
 			return keyboardDismissMode;
 		}

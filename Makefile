@@ -1,11 +1,9 @@
 FINALPACKAGE = 1
 
-SYSROOT = $(THEOS)/sdks/iPhoneOS13.6.sdk
-
 INSTALL_TARGET_PROCESSES = SpringBoard
 
 export ARCHS = armv7 armv7s arm64 arm64e
-export TARGET = iphone:clang:13.0:8.0
+export TARGET = iphone:clang:14.5:8.0
 
 include $(THEOS)/makefiles/common.mk
 
