@@ -1,5 +1,5 @@
 /* Keyboard Controller - Control Keyboard on iOS/iPadOS
- * Copyright (C) 2020 Tomasz Poliszuk
+ * (c) Copyright 2020-2023 Tomasz Poliszuk
  *
  * Keyboard Controller is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@
 @end
 
 @interface KeyboardControllerMainSettings : PSListController
-@property (nonatomic, strong) NSMutableArray * standardSpecifiers;
+@property (nonatomic, strong) NSMutableArray *standardSpecifiers;
 @end
 
 @interface KeyboardControllerKeyboardTypeSettings : PSListController

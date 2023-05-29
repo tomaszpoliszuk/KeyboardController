@@ -2,7 +2,7 @@ include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = KeyboardControllerSettings
 
-$(BUNDLE_NAME)_FILES = KeyboardControllerMainSettings.mm KeyboardControllerKeyboardTypeSettings.mm KeyboardControllerReturnKeyTypeSettings.mm KeyboardControllerBetaOptions.mm
+$(BUNDLE_NAME)_FILES = $(wildcard *.mm)
 $(BUNDLE_NAME)_INSTALL_PATH = /Library/PreferenceBundles
 $(BUNDLE_NAME)_FRAMEWORKS = UIKit
 $(BUNDLE_NAME)_PRIVATE_FRAMEWORKS = Preferences

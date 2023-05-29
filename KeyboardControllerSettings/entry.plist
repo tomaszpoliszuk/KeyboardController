@@ -5,6 +5,7 @@
 		label = "Keyboard Controller";
 		bundle = KeyboardControllerSettings;
 		detail = KeyboardControllerMainSettings;
+		id = KeyboardController;
 		icon = icons/KeyboardController.png;
 	};
 }
